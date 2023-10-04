@@ -1,6 +1,5 @@
 package com.tb.eatclean.entity.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tb.eatclean.entity.CommonObjectDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -8,7 +7,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,18 +28,21 @@ public class User extends CommonObjectDTO implements UserDetails {
     @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     @NotBlank(message = "email is mandatory")
     private String email;
-    @Length(message = "Length of pass must be more 8 character", min = 8)
     private String password;
     private String name;
     private String address;
-    @NotBlank
     private String phoneNumber;
+    private boolean isActive;
     private Collection<Role> roles = new ArrayList<>();
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<SimpleGrantedAuthority> roleList = new ArrayList<>();
         roles.stream().forEach(role -> roleList.add(new SimpleGrantedAuthority(role.name())));
         return roleList;
+    }
+
+    public User(String email) {
+        this.email = email;
     }
 
     @Override
@@ -71,6 +72,15 @@ public class User extends CommonObjectDTO implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return isActive;
+    }
+
+    public void mapping(User user) {
+        this.password = user.getPassword();
+        this.name = user.getName();
+        this.address = user.getAddress();
+        this.phoneNumber = user.getPhoneNumber();
+        this.isActive = user.isActive();
+        this.roles = user.getRoles();
     }
 }

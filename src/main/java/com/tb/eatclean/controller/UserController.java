@@ -3,30 +3,34 @@ package com.tb.eatclean.controller;
 
 import com.tb.eatclean.entity.ResponseDTO;
 import com.tb.eatclean.entity.user.User;
+import com.tb.eatclean.service.mail.EmailSender;
 import com.tb.eatclean.service.user.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("api/v1/users")
+@CrossOrigin("*")
 public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private EmailSender mailService;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseDTO<User>> register(@Valid @RequestBody User user) {
+    public ResponseEntity<ResponseDTO<User>> register(@Valid @RequestBody User payload) {
         try {
-            userService.save(user);
+            payload.setPassword(payload.getEmail().substring(0, 8));
+            userService.save(payload);
+            mailService.send(payload.getEmail(), payload.getEmail(), "pass");
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDTO<>(null, "400", e.getMessage(), false));
         }
 

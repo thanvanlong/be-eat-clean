@@ -24,7 +24,7 @@ public class CustomExceptionHandler {
             message =  error.getDefaultMessage();;
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDTO<>(null, "400", message, false ));
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO<>(null, "400", message, false ));
     }
 
 }

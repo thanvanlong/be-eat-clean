@@ -1,10 +1,12 @@
 package com.tb.eatclean.service.mail;
 
+import org.springframework.stereotype.Component;
+
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MailValidator implements Predicate<String> {
+public class EmailValidator implements Predicate<String> {
     @Override
     public boolean test(String s) {
         Pattern VALID_EMAIL_ADDRESS_REGEX =

@@ -29,12 +29,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(request.getRequestURI().contains("/api/login") ||
+        if(request.getRequestURI().contains("/api/v1/users/login") ||
                 request.getRequestURI().equals("/api/refresh") ||
                 request.getRequestURI().equals("/api/save") ||
                 request.getRequestURI().equals("/api/forget-password") ||
                 request.getRequestURI().contains("/api/user/active")){
-            System.out.println(request.getRequestURI() + " long long");
             filterChain.doFilter(request, response);
         }else{
             String header = request.getHeader(AUTHORIZATION);
@@ -52,7 +51,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                             new UsernamePasswordAuthenticationToken(decodedJWT.getKeyId(), null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-//                   System.out.println(SecurityContextHolder.getContext().getAuthentication());
                     filterChain.doFilter(request, response);
                 }catch (Exception e){
                     response.setHeader("error", e.getMessage());
@@ -63,7 +61,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     new ObjectMapper().writeValue(response.getOutputStream(), tokens);
                 }
             }else {
-//                System.out.println("Error");
                 filterChain.doFilter(request, response);
             }
         }

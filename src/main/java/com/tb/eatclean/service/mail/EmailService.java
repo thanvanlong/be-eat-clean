@@ -1,5 +1,5 @@
 package com.tb.eatclean.service.mail;
 
-public interface MailService {
+public interface EmailService {
     void send(String to, String content, String type);
 }
