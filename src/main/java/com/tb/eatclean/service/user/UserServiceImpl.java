@@ -1,13 +1,15 @@
 package com.tb.eatclean.service.user;
 
+import com.tb.eatclean.config.PassEncoder;
 import com.tb.eatclean.entity.user.User;
 import com.tb.eatclean.repo.UserRepo;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 @Service
@@ -16,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepo userRepo;
-    private PasswordEncoder passwordEncoder;
+    private final PassEncoder passwordEncoder;
     @Override
     @Transactional
 
@@ -24,7 +26,7 @@ public class UserServiceImpl implements UserService {
         if (userRepo.findUserByEmail(user.getEmail()).isPresent()) {
             throw new Exception("Account has already exist");
         } else {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+//            user.setPassword(passwordEncoder.encode("user.getPassword()"));
             userRepo.save(user);
         }
     }
@@ -55,9 +57,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (userRepo.findUserByEmail(username).isPresent()) {
-            return userRepo.findUserByEmail(username).get();
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        System.out.println(email);
+        if (userRepo.findUserByEmail(email).isPresent()) {
+            User user = userRepo.findUserByEmail(email).get();
+            return user;
         } else {
             throw new UsernameNotFoundException("User not found");
         }

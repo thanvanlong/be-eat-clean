@@ -26,9 +26,9 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<ResponseDTO<User>> register(@Valid @RequestBody User payload) {
         try {
-            payload.setPassword(payload.getEmail().substring(0, 8));
+            payload.setPassword("123123");
             userService.save(payload);
-            mailService.send(payload.getEmail(), payload.getEmail(), "pass");
+//            mailService.send(payload.getEmail(), payload.getEmail(), "pass");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDTO<>(null, "400", e.getMessage(), false));
