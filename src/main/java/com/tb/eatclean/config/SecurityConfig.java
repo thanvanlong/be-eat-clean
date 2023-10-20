@@ -28,6 +28,10 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true)
 public class SecurityConfig {
 
     @Autowired
@@ -63,7 +67,8 @@ public class SecurityConfig {
         http.csrf().disable();
         http.cors();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-        http.authorizeRequests().anyRequest().permitAll();
+        http.authorizeRequests().requestMatchers(HttpMethod.POST, "/api/v1/users/login").permitAll();
+        http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customeAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
