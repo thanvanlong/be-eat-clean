@@ -23,8 +23,8 @@ import java.util.Collection;
 @Table(name = "userTbl")
 public class User extends CommonObjectDTO implements UserDetails {
     @Id
-    @UuidGenerator
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     @NotBlank(message = "email is mandatory")
     private String email;
