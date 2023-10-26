@@ -1,11 +1,10 @@
 package com.tb.eatclean.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.tb.eatclean.dto.CommentDto;
 import com.tb.eatclean.entity.ResponseDTO;
-import com.tb.eatclean.entity.comments.Comments;
+import com.tb.eatclean.entity.comment.Comment;
 import com.tb.eatclean.service.comment.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +31,7 @@ public class CommentController {
   }
 
   @PostMapping()
-  public ResponseEntity<ResponseDTO<String>> createComment(@RequestBody Comments comment) throws Exception {
+  public ResponseEntity<ResponseDTO<String>> createComment(@RequestBody Comment comment) throws Exception {
     return ResponseEntity.ok(new ResponseDTO<>(commentService.createComment(comment), "200", "Success", true));
   }
 }

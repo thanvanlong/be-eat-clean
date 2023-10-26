@@ -1,18 +1,20 @@
 package com.tb.eatclean.entity.user;
 
-import com.tb.eatclean.entity.CommonObjectDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
-import org.hibernate.validator.constraints.Length;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.redis.core.RedisHash;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -21,7 +23,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @Entity
 @Table(name = "userTbl")
-public class User extends CommonObjectDTO implements UserDetails {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -32,8 +34,14 @@ public class User extends CommonObjectDTO implements UserDetails {
     private String name;
     private String address;
     private String phoneNumber;
-    private boolean isActive;
+    private Boolean isActive;
+    @Enumerated
     private Collection<Role> roles = new ArrayList<>();
+    @CreationTimestamp
+    private LocalDateTime createAt;
+    @UpdateTimestamp
+    private LocalDateTime updateAt;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<SimpleGrantedAuthority> roleList = new ArrayList<>();
@@ -72,15 +80,23 @@ public class User extends CommonObjectDTO implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
 
     public void mapping(User user) {
-        this.password = user.getPassword();
-        this.name = user.getName();
-        this.address = user.getAddress();
-        this.phoneNumber = user.getPhoneNumber();
-        this.isActive = user.isActive();
-        this.roles = user.getRoles();
+        for(Field field : this.getClass().getDeclaredFields()){
+            for (Field f :
+                    user.getClass().getDeclaredFields()) {
+                if (field.getName().equals(f.getName())) {
+                    try {
+                        if (f.get(user) != null) {
+                            field.set(this, f.get(user));
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+            }
+        }
     }
 }

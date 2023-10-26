@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -55,6 +57,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void find(String id) {
 
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepo.findUserByEmail(email).get();
     }
 
     @Override

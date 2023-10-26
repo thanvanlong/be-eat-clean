@@ -3,8 +3,8 @@ package com.tb.eatclean.controller;
 import java.util.List;
 
 import com.tb.eatclean.entity.ResponseDTO;
-import com.tb.eatclean.entity.categories.Categories;
-import com.tb.eatclean.service.categories.CategoriesService;
+import com.tb.eatclean.entity.categorie.Categorie;
+import com.tb.eatclean.service.categorie.CategoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +21,7 @@ public class CategoryController {
   private CategoriesService categoriesService;
 
   @GetMapping
-  public ResponseEntity<ResponseDTO<List<Categories>>> getAll() {
+  public ResponseEntity<ResponseDTO<List<Categorie>>> getAll() {
     return ResponseEntity.ok(new ResponseDTO<>(categoriesService.getAllCategories(), "200", "Success", true));
   }
 }

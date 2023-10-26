@@ -1,6 +1,6 @@
 package com.tb.eatclean.dto;
 
-import com.tb.eatclean.entity.bills.BillStatus;
+import com.tb.eatclean.entity.bill.BillStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

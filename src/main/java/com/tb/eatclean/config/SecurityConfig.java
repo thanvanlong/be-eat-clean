@@ -13,6 +13,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -28,11 +29,15 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @EnableGlobalMethodSecurity(
         prePostEnabled = true,
+        proxyTargetClass = true,
         securedEnabled = true,
         jsr250Enabled = true)
 public class SecurityConfig {
+
+    private final String[] WHITE_LIST = {"/swagger-ui/*", "/v3/api-docs/**", "/v3/api-docs/swagger-config"};
 
     @Autowired
     UserService userService;
@@ -67,7 +72,9 @@ public class SecurityConfig {
         http.csrf().disable();
         http.cors();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-        http.authorizeRequests().requestMatchers(HttpMethod.POST, "/api/v1/users/login").permitAll();
+        http.authorizeRequests().requestMatchers(HttpMethod.POST, "/api/v1/users/**").permitAll();
+        http.authorizeRequests().requestMatchers(HttpMethod.GET, "/api/v1/users/active").permitAll();
+        http.authorizeRequests().requestMatchers(WHITE_LIST).permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customeAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

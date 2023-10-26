@@ -2,9 +2,8 @@ package com.tb.eatclean.service.cart;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import com.tb.eatclean.entity.carts.Carts;
+import com.tb.eatclean.entity.carts.Cart;
 import com.tb.eatclean.entity.user.User;
 import com.tb.eatclean.repo.CartRepo;
 import com.tb.eatclean.repo.UserRepo;
@@ -25,7 +24,7 @@ public class CartServiceImpl implements CartService {
 //  private BookService bookService;
 
   @Override
-  public List<Carts> getCartByUser(Long userId) throws Exception{
+  public List<Cart> getCartByUser(Long userId) throws Exception{
     try {
       Optional<User> user = userRepo.findById(userId);
 
@@ -49,7 +48,7 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-  public String createCartByUser(Carts cart) throws Exception{
+  public String createCartByUser(Cart cart) throws Exception{
     try {
       Optional<User> user = userRepo.findById(cart.getUserId());
 
@@ -63,7 +62,7 @@ public class CartServiceImpl implements CartService {
 //        return new ResponseObject("Không tìm thấy  sản phẩm!", null);
 //      }
 
-      Optional<Carts> existsCart = Optional.ofNullable(
+      Optional<Cart> existsCart = Optional.ofNullable(
           cartRepo.findByUserIdAndBookIdAndStatus(cart.getUserId(),
               cart.getBookId(), 1));
 
@@ -71,7 +70,7 @@ public class CartServiceImpl implements CartService {
 //        return new ResponseObject("Sản phẩm đã này có trong giỏ hàng!", null);
       }
 
-      Carts newCart = new Carts();
+      Cart newCart = new Cart();
       newCart.setUserId(cart.getUserId());
       newCart.setBookId(cart.getBookId());
       newCart.setUser(user.get());
@@ -88,13 +87,13 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-  public String updateCart(Carts cartUpdate, Long id) throws Exception{
+  public String updateCart(Cart cartUpdate, Long id) throws Exception{
     try {
       if (cartUpdate.getQuantity() < 1) {
         throw new Exception("Số lượng đặt hàng phải lớn hơn 0!");
       }
 
-      Optional<Carts> cart = cartRepo.findById(id);
+      Optional<Cart> cart = cartRepo.findById(id);
 
       if (!cart.isPresent()) {
         throw  new Exception("Không tồn tại giỏ hàng này!!");
@@ -119,7 +118,7 @@ public class CartServiceImpl implements CartService {
   @Override
   public Object deleteCart(Long id) throws Exception{
     try {
-      Optional<Carts> cart = cartRepo.findById(id);
+      Optional<Cart> cart = cartRepo.findById(id);
 
       if (!cart.isPresent()) {
         throw new Exception("Không tồn tại giỏ hàng này!!");

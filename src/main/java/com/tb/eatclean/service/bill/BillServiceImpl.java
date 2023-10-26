@@ -1,4 +1,4 @@
-package com.tb.eatclean.service.bills;
+package com.tb.eatclean.service.bill;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,9 +8,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.tb.eatclean.dto.BillDto;
-import com.tb.eatclean.entity.ResponseDTO;
-import com.tb.eatclean.entity.bills.Bills;
-import com.tb.eatclean.entity.carts.Carts;
+import com.tb.eatclean.entity.bill.Bill;
+import com.tb.eatclean.entity.carts.Cart;
 import com.tb.eatclean.entity.user.User;
 import com.tb.eatclean.repo.BillRepo;
 import com.tb.eatclean.repo.CartRepo;
@@ -42,40 +41,15 @@ public class BillServiceImpl implements BillService {
   private FoodsService foodsService;
 
   @Override
-  public List<Bills> getHistoryByUser(Long userId) throws Exception{
-    try {
-      Optional<User> user = userRepo.findById(userId);
+  public List<Bill> getHistoryByUser(Long userId) throws Exception{
 
-//      if (!user.isPresent()) {
-//        return new ResponseDTO<String>("Không tìm thấy người dùng!", "400", "Faild", false);
-//      }
+    return null;
 
-      List<Bills> bills = billRepo.findAllByUserId(userId);
-
-      if (bills.size() > 0) {
-        for (Bills item: bills) {
-          Map<String, Object> listBooks = objectMapper.readValue(item.getListBooks(), Map.class);
-          ArrayList<Carts> tmp = new ArrayList<>();
-          item.setInfo(objectMapper.readValue(item.getUserInfo(), Map.class));
-
-          ArrayList<Integer> cartIds = (ArrayList<Integer>) listBooks.get("carts");
-
-          for (var cartId: cartIds) {
-            tmp.add(this.getCart(cartId.longValue()));
-          }
-          item.setListProducts(tmp);
-        }
-      }
-
-      return bills;
-    } catch (Exception e) {
-      throw new Exception(e.getMessage());
-    }
   }
 
   @Override
-  public Bills getBillById(Long id) throws Exception {
-    Optional<Bills> bill = billRepo.findById(id);
+  public Bill getBillById(Long id) throws Exception {
+    Optional<Bill> bill = billRepo.findById(id);
 
     if (bill.isPresent()) {
       return bill.get();
@@ -84,14 +58,14 @@ public class BillServiceImpl implements BillService {
   }
 
   @Override
-  public List<Bills> getAllBill() throws Exception {
+  public List<Bill> getAllBill() throws Exception {
     try {
-      ArrayList<Bills> bills = (ArrayList<Bills>) billRepo.findAll();
+      ArrayList<Bill> bills = (ArrayList<Bill>) billRepo.findAll();
 
       if (bills.size() > 0) {
-        for (Bills item: bills) {
+        for (Bill item: bills) {
           Map<String, Object> listBooks = objectMapper.readValue(item.getListBooks(), Map.class);
-          ArrayList<Carts> tmp = new ArrayList<>();
+          ArrayList<Cart> tmp = new ArrayList<>();
           item.setInfo(objectMapper.readValue(item.getUserInfo(), Map.class));
 
           ArrayList<Integer> cartIds = (ArrayList<Integer>) listBooks.get("carts");
@@ -120,7 +94,7 @@ public class BillServiceImpl implements BillService {
 //        return new ResponseObject<Bills>("Không tìm thấy người dùng!", null);
 //      }
 
-      Bills bill = new Bills();
+      Bill bill = new Bill();
       bill.setDate(billDto.getDate());
       bill.setStatus(billDto.getStatus());
       bill.setUserId(billDto.getUserId());
@@ -129,7 +103,7 @@ public class BillServiceImpl implements BillService {
 
       ArrayList<Integer> cartIds = (ArrayList<Integer>) billDto.getListFoods().get("carts");
       for (Integer cartId: cartIds) {
-        Carts c = new Carts();
+        Cart c = new Cart();
         c.setStatus(0);
         c.setQuantity(this.getCart(cartId.longValue()).getQuantity());
         cartService.updateCart(c, cartId.longValue());
@@ -142,12 +116,12 @@ public class BillServiceImpl implements BillService {
   }
 
   @Override
-  public Bills getBill(Long id) throws Exception{
+  public Bill getBill(Long id) throws Exception{
     try {
-      Bills bill = this.getBillById(id);
+      Bill bill = this.getBillById(id);
 
       Map<String, Object> listBooks = objectMapper.readValue(bill.getListBooks(), Map.class);
-      ArrayList<Carts> tmp = new ArrayList<>();
+      ArrayList<Cart> tmp = new ArrayList<>();
       bill.setInfo(objectMapper.readValue(bill.getUserInfo(), Map.class));
 
       ArrayList<Integer> cartIds = (ArrayList<Integer>) listBooks.get("carts");
@@ -166,14 +140,14 @@ public class BillServiceImpl implements BillService {
   @Override
   public String updateBill(Long id, BillDto updateBillDto) throws Exception{
     try {
-      Optional<Bills> bill = billRepo.findById(id);
+      Optional<Bill> bill = billRepo.findById(id);
 
       if (!bill.isPresent()) {
         throw new Exception("Hóa đơn không tồn tại!");
       }
 
       Map<String, Object> listBooks = objectMapper.readValue(bill.get().getListBooks(), Map.class);
-      ArrayList<Carts> tmp = new ArrayList<>();
+      ArrayList<Cart> tmp = new ArrayList<>();
       bill.get().setInfo(objectMapper.readValue(bill.get().getUserInfo(), Map.class));
 
       ArrayList<Integer> cartIds = (ArrayList<Integer>) listBooks.get("carts");
@@ -193,9 +167,9 @@ public class BillServiceImpl implements BillService {
     }
   }
 
-  public Carts getCart(Long id) {
+  public Cart getCart(Long id) {
     try {
-      Optional<Carts> cart = cartRepo.findById(id);
+      Optional<Cart> cart = cartRepo.findById(id);
 
       if (!cart.isPresent()) {
         return null;

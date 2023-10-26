@@ -1,6 +1,6 @@
-package com.tb.eatclean.service.categories;
+package com.tb.eatclean.service.categorie;
 
-import com.tb.eatclean.entity.categories.Categories;
+import com.tb.eatclean.entity.categorie.Categorie;
 import com.tb.eatclean.repo.CategoryRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,12 @@ public class CategoriesServiceImpl implements CategoriesService {
     private CategoryRepo categoryRepo;
 
     @Override
-    public List<Categories> getAllCategories() {
+    public List<Categorie> getAllCategories() {
         return categoryRepo.findAll();
+    }
+
+    @Override
+    public void save(Categorie categorie) {
+        categoryRepo.save(categorie);
     }
 }

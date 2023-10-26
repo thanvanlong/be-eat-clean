@@ -1,8 +1,8 @@
 package com.tb.eatclean.service.foods;
 
 import com.tb.eatclean.entity.Metadata;
-import com.tb.eatclean.entity.foods.Foods;
-import com.tb.eatclean.repo.FoodsRepo;
+import com.tb.eatclean.entity.product.Food;
+import com.tb.eatclean.repo.FoodRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,17 +19,17 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FoodsServiceImpl implements FoodsService {
     @Autowired
-    private FoodsRepo foodsRepo;
+    private FoodRepo foodsRepo;
 
     @Override
-    public List<Foods> getAll() {
-        return null;
+    public List<Food> getAll() {
+        return foodsRepo.findAll();
     }
 
     @Override
     public Map<String, Object> pagingSort(int page, int limit) {
         Pageable pagingSort = PageRequest.of(page, limit);
-        Page<Foods> foodsPage = foodsRepo.findAll(pagingSort);
+        Page<Food> foodsPage = foodsRepo.findAll(pagingSort);
 
         Metadata metadata = new Metadata();
         metadata.setPageNumber(foodsPage.getNumber());
@@ -47,7 +47,7 @@ public class FoodsServiceImpl implements FoodsService {
     @Override
     public Map<String, Object> pagingSortSearch(int page, int limit, String search) {
         Pageable pagingSort = PageRequest.of(page, limit);
-        Page<Foods> foodsPage = foodsRepo.findAllByNameContaining(search, pagingSort);
+        Page<Food> foodsPage = foodsRepo.findAllByNameContaining(search, pagingSort);
 
         Metadata metadata = new Metadata();
         metadata.setPageNumber(foodsPage.getNumber());
@@ -64,25 +64,25 @@ public class FoodsServiceImpl implements FoodsService {
     }
 
     @Override
-    public Foods get(Long id) {
+    public Food get(Long id) {
         return null;
     }
 
     @Override
-    public Foods getFoodsById(Long id) throws Exception{
-        Optional<Foods> foods = foodsRepo.findById(id);
+    public Food getFoodsById(Long id) throws Exception{
+        Optional<Food> foods = foodsRepo.findById(id);
         if(foods.isPresent()) return foods.get();
         throw new Exception("Khong co do an nay");
     }
 
     @Override
-    public String create(Foods foods) throws Exception {
+    public String create(Food foods) throws Exception {
         foodsRepo.save(foods);
         return "Tao san pham thanh cong";
     }
 
     @Override
-    public String update(Long id, Foods foods) {
+    public String update(Long id, Food foods) {
         return null;
     }
 

@@ -1,13 +1,14 @@
-package com.tb.eatclean.entity.bills;
+package com.tb.eatclean.entity.bill;
 
-import com.tb.eatclean.entity.CommonObjectDTO;
-import com.tb.eatclean.entity.carts.Carts;
+import com.tb.eatclean.entity.carts.Cart;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +18,17 @@ import java.util.Map;
 @NoArgsConstructor
 @Entity
 @Table(name = "bills")
-public class Bills extends CommonObjectDTO {
+public class Bill  {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   private String date;
   private BillStatus status;
   private Long userId;
+  @CreationTimestamp
+  private LocalDateTime createAt;
+  @UpdateTimestamp
+  private LocalDateTime updateAt;
 
   @Column(name = "list_books",columnDefinition = "json")
   private String listBooks;
@@ -33,7 +38,7 @@ public class Bills extends CommonObjectDTO {
 
   @Transient
   @OneToMany
-  private List<Carts> listProducts;
+  private List<Cart> listProducts;
 
   @Transient
   private Map<String, Object> info;

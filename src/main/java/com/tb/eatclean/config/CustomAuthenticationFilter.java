@@ -64,6 +64,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withExpiresAt(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 60 * 1000))
                 .withIssuer(request.getRequestURI())
                 .sign(algorithm);
+
         ResponseDTO<String> data = new ResponseDTO<>(access_token, "200", "", true);
         Map<String, ResponseDTO<String>> tokens = new HashMap<>();
         Cookie cookie = new Cookie("refresh_token", refresh_token);
@@ -74,7 +75,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         response.addCookie(cookie);
         tokens.put("data", data);
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        new ObjectMapper().writeValue(response.getOutputStream(), data);
     }
 
     @Override

@@ -1,12 +1,11 @@
 package com.tb.eatclean.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.tb.eatclean.dto.BillDto;
 import com.tb.eatclean.entity.ResponseDTO;
-import com.tb.eatclean.entity.bills.Bills;
-import com.tb.eatclean.service.bills.BillService;
+import com.tb.eatclean.entity.bill.Bill;
+import com.tb.eatclean.service.bill.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,7 +27,7 @@ public class BillController {
   private BillService billService;
 
   @GetMapping()
-  public ResponseEntity<ResponseDTO<List<Bills>>> getHistoryByUser(
+  public ResponseEntity<ResponseDTO<List<Bill>>> getHistoryByUser(
       @RequestParam(name = "userId", defaultValue = "null") String userId) throws Exception{
     if (!userId.equals("null")) {
       return ResponseEntity.ok(new ResponseDTO<>(billService.getHistoryByUser(Long.parseLong(userId)), "", "", true));
@@ -38,7 +37,7 @@ public class BillController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ResponseDTO<Bills>> getBill(@PathVariable("id") Long id) throws Exception{
+  public ResponseEntity<ResponseDTO<Bill>> getBill(@PathVariable("id") Long id) throws Exception{
     return ResponseEntity.ok(new ResponseDTO<>(billService.getBill(id), "", "", true));
   }
 
