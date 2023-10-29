@@ -1,17 +1,19 @@
 package com.tb.eatclean.service.cart;
 
 import com.tb.eatclean.entity.carts.Cart;
+import com.tb.eatclean.entity.product.Food;
+import com.tb.eatclean.entity.user.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public interface CartService {
-  List<Cart> getCartByUser(Long userId) throws Exception;
+    void save(Cart cart);
 
-  String createCartByUser(Cart cart) throws Exception;
+    Cart getByFood(Food food);
 
-  String updateCart(Cart cartUpdate, Long id) throws Exception;
+    List<Cart> getCartByUser(User user);
 
-  Object deleteCart(Long id) throws Exception;
+    int countCartByUser(User user);
 }

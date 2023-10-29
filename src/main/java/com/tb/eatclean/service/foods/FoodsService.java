@@ -23,4 +23,6 @@ public interface FoodsService {
     String update(Long id, Food foods);
 
     Object remove(Long id);
+
+    Map<String, Object> filter(int page, int limit, String search, String label, String filter, String sortType);
 }

@@ -1,25 +1,32 @@
 package com.tb.eatclean.service.foods;
 
+import com.google.gson.Gson;
 import com.tb.eatclean.entity.Metadata;
 import com.tb.eatclean.entity.product.Food;
 import com.tb.eatclean.repo.FoodRepo;
+import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class FoodsServiceImpl implements FoodsService {
     @Autowired
     private FoodRepo foodsRepo;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Override
     public List<Food> getAll() {
@@ -76,6 +83,7 @@ public class FoodsServiceImpl implements FoodsService {
     }
 
     @Override
+    @Transactional
     public String create(Food foods) throws Exception {
         foodsRepo.save(foods);
         return "Tao san pham thanh cong";
@@ -89,5 +97,23 @@ public class FoodsServiceImpl implements FoodsService {
     @Override
     public Object remove(Long id) {
         return null;
+    }
+
+    @Override
+    public Map<String, Object> filter(int page, int limit, String search, String label, String filter, String sortType) {
+        Pageable pageable = PageRequest.of(page, limit, new Gson().fromJson(sortType, Sort.Direction.class), filter);
+        System.out.println(search + "longtv");
+        Page<Food> foodsPage = foodsRepo.findByName(search, label, pageable);
+        Metadata metadata = new Metadata();
+        metadata.setPageNumber(foodsPage.getNumber());
+        metadata.setPageSize(foodsPage.getSize());
+        metadata.setTotalPages(foodsPage.getTotalPages());
+        metadata.setTotalItems(foodsPage.getTotalElements());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("results", foodsPage.getContent());
+        response.put("metadata", metadata);
+
+        return response;
     }
 }

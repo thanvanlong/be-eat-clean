@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.tb.eatclean.entity.carts.Cart;
+import com.tb.eatclean.entity.product.Food;
 import com.tb.eatclean.entity.user.User;
 import com.tb.eatclean.repo.CartRepo;
 import com.tb.eatclean.repo.UserRepo;
@@ -20,115 +21,25 @@ public class CartServiceImpl implements CartService {
   @Autowired
   private UserRepo userRepo;
 
-//  @Autowired
-//  private BookService bookService;
+
+    @Override
+    public void save(Cart cart) {
+        cartRepo.save(cart);
+    }
 
   @Override
-  public List<Cart> getCartByUser(Long userId) throws Exception{
-    try {
-      Optional<User> user = userRepo.findById(userId);
-
-      if (!user.isPresent()) {
-        throw  new Exception("Không tìm thấy người dùng!");
-      }
-
-//      List<Carts> carts = cartRepo.findAllByUserIdAndStatus(userId, 1).stream().map(
-//          row -> {
-//            ResponseObject<Books> book = bookService.get(row.getBookId());
-//            row.setUser(user.get());
-//            row.setBooks(book.getData());
-//            return row;
-//          }
-//      ).collect(Collectors.toList());
-
-      return null;
-    } catch (Exception e) {
-      throw  new Exception(e.getMessage());
-    }
+  public Cart getByFood(Food food) {
+      Optional<Cart> cart = cartRepo.findByFoods(food);
+      return cart.orElse(null);
   }
 
-  @Override
-  public String createCartByUser(Cart cart) throws Exception{
-    try {
-      Optional<User> user = userRepo.findById(cart.getUserId());
-
-      if (!user.isPresent()) {
-        throw  new Exception("Không tìm thấy người dùng!");
-      }
-
-//      ResponseObject<Books> book = bookService.get(cart.getBookId());
-
-//      if (book.getData() == null) {
-//        return new ResponseObject("Không tìm thấy  sản phẩm!", null);
-//      }
-
-      Optional<Cart> existsCart = Optional.ofNullable(
-          cartRepo.findByUserIdAndBookIdAndStatus(cart.getUserId(),
-              cart.getBookId(), 1));
-
-      if (existsCart.isPresent()) {
-//        return new ResponseObject("Sản phẩm đã này có trong giỏ hàng!", null);
-      }
-
-      Cart newCart = new Cart();
-      newCart.setUserId(cart.getUserId());
-      newCart.setBookId(cart.getBookId());
-      newCart.setUser(user.get());
-//      newCart.setBooks(book.getData());
-      newCart.setQuantity(cart.getQuantity());
-      newCart.setStatus(1);
-
-      newCart = cartRepo.save(newCart);
-
-      return "Them san pham vao gio hang thanh cong";
-    } catch (Exception e) {
-      throw  new Exception(e.getMessage());
+    @Override
+    public List<Cart> getCartByUser(User user) {
+        return cartRepo.findByUser(user);
     }
-  }
 
-  @Override
-  public String updateCart(Cart cartUpdate, Long id) throws Exception{
-    try {
-      if (cartUpdate.getQuantity() < 1) {
-        throw new Exception("Số lượng đặt hàng phải lớn hơn 0!");
-      }
-
-      Optional<Cart> cart = cartRepo.findById(id);
-
-      if (!cart.isPresent()) {
-        throw  new Exception("Không tồn tại giỏ hàng này!!");
-      }
-
-      Optional<User> user = userRepo.findById(cart.get().getUserId());
-
-      cart.get().setQuantity(cartUpdate.getQuantity());
-      cart.get().setUser(user.get());
-//      cart.get().setBooks(bookService.get(cart.get().getBookId()).getData());
-      cart.get().setStatus(cartUpdate.getStatus());
-
-      cartRepo.save(cart.get());
-      return "Cap nhat gio hang thanh cong";
-    } catch (Exception e) {
-      throw new Exception(
-          e.getMessage()
-      );
+    @Override
+    public int countCartByUser(User user) {
+        return cartRepo.countByUser(user);
     }
-  }
-
-  @Override
-  public Object deleteCart(Long id) throws Exception{
-    try {
-      Optional<Cart> cart = cartRepo.findById(id);
-
-      if (!cart.isPresent()) {
-        throw new Exception("Không tồn tại giỏ hàng này!!");
-      }
-
-      cartRepo.deleteById(cart.get().getId());
-
-      return true;
-    } catch (Exception e) {
-     throw new Exception(e.getMessage());
-    }
-  }
 }

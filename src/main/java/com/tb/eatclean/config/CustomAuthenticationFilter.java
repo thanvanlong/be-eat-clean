@@ -4,14 +4,17 @@ package com.tb.eatclean.config;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 import com.tb.eatclean.entity.ResponseDTO;
 import com.tb.eatclean.entity.user.User;
+import com.tb.eatclean.service.cart.CartService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -55,7 +58,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String access_token = JWT.create()
                 .withSubject(user.getName())
                 .withKeyId(user.getEmail())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 1000 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 60 * 1000   ))
                 .withIssuer(request.getRequestURI())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
@@ -66,14 +69,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .sign(algorithm);
 
         ResponseDTO<String> data = new ResponseDTO<>(access_token, "200", "", true);
-        Map<String, ResponseDTO<String>> tokens = new HashMap<>();
         Cookie cookie = new Cookie("refresh_token", refresh_token);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
         cookie.setSecure(true);
         cookie.setMaxAge( 1 * 24 * 60 * 60 *1000);
         response.addCookie(cookie);
-        tokens.put("data", data);
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), data);
     }

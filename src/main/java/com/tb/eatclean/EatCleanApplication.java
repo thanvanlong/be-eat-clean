@@ -28,5 +28,9 @@ public class EatCleanApplication {
     }
 
 
+    @Bean
+    public PasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
 }

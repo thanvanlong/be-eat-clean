@@ -1,14 +1,18 @@
 package com.tb.eatclean.repo;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.tb.eatclean.entity.carts.Cart;
+import com.tb.eatclean.entity.product.Food;
+import com.tb.eatclean.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CartRepo extends JpaRepository<Cart, Long> {
-  List<Cart> findAllByUserIdAndStatus(Long userId, int status);
+    Optional<Cart> findByFoods(Food food);
+    List<Cart> findByUser(User user);
 
-  Cart findByUserIdAndBookIdAndStatus(Long userId, Long bookId, int status);
+    int countByUser(User user);
 }

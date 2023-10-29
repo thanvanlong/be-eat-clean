@@ -47,6 +47,33 @@ public class UserController {
     @Value("${client.url.active.redirect}")
     private String redirectUrl;
 
+
+
+//    @PostConstruct
+    public void init() throws Exception {
+        User user = new User();
+        user.setPassword("123123");
+        user.setEmail("longthan@gmail.com");
+
+        userService.save(user);
+
+//        Thread.sleep(1000);
+
+        User user1 = new User();
+        user.setPassword("123123");
+        user.setEmail("longthan1@gmail.com");
+
+        userService.save(user1);
+
+//        Thread.sleep(1000);
+
+        User user2 = new User();
+        user.setPassword("123123");
+        user.setEmail("longthan2@gmail.com");
+
+        userService.save(user2);
+    }
+
     @PreAuthorize("permitAll()")
     @PostMapping("/register")
     public ResponseEntity<ResponseDTO<User>> register(@Valid @RequestBody User payload) {

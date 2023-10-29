@@ -6,8 +6,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
-@Configuration
+//@Service
+//@Configuration
 public class PassEncoder implements PasswordEncoder {
     @Override
     public String encode(CharSequence charSequence) {

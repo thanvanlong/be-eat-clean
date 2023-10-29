@@ -1,9 +1,8 @@
 package com.tb.eatclean.entity.product;
 
-import com.tb.eatclean.common.ConvertArrayType;
-import com.tb.eatclean.entity.carts.Cart;
 import com.tb.eatclean.entity.categorie.Categorie;
 import com.tb.eatclean.entity.comment.Comment;
+import com.tb.eatclean.utils.StringUtils;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,23 +28,23 @@ public class Food  {
     private double price;
     private String description;
     private int quantity;
-    @Column(name = "imgs", length = 20480)
-    private String imgs;
+    @Column(name = "imgs")
+    @ElementCollection
+    private List<String> imgs;
     private String slug;
     private String shortDescription;
     @CreationTimestamp
     private LocalDateTime createAt;
     @UpdateTimestamp
     private LocalDateTime updateAt;
-
     @ManyToMany
     private Set<Categorie> categories;
-
-    @ManyToMany
-    private List<Cart> carts;
-
     @OneToMany
     private List<Comment> comments;
+    private String searchName;
+
+    @Transient
+    private int orderCount;
 
     public void setCategory(List<Long> idsCategory){
         this.categories = idsCategory.stream().map(idCategory -> {
@@ -55,11 +54,13 @@ public class Food  {
         }).collect(Collectors.toSet());
     }
 
-    public void setCategory(Set<Categorie> categories) {
-        this.categories = categories;
+    public void setName(String name) {
+        this.name = name;
+        this.searchName = StringUtils.removeAccents(this.name).toLowerCase();
     }
 
-    public List<String> getStringArray() {
-        return ConvertArrayType.convertToList(this.imgs);
-    }
+
+//    public void setCategory(Set<Categorie> categories) {
+//        this.categories = categories;
+//    }
 }

@@ -20,6 +20,7 @@ public class Categorie {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   private String label;
+  private String key;
   @CreationTimestamp
   private LocalDateTime createAt;
   @UpdateTimestamp

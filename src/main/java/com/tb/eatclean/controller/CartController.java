@@ -4,9 +4,13 @@ import java.util.List;
 
 import com.tb.eatclean.entity.ResponseDTO;
 import com.tb.eatclean.entity.carts.Cart;
+import com.tb.eatclean.entity.product.Food;
+import com.tb.eatclean.entity.user.User;
 import com.tb.eatclean.service.cart.CartService;
+import com.tb.eatclean.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,31 +24,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/cart")
+@RequestMapping("/api/v1/cart")
 public class CartController {
   @Autowired
   private CartService cartService;
+  @Autowired
+  private UserService userService;
 
-  @GetMapping()
-  public ResponseEntity<ResponseDTO<List<Cart>>> getCartByUser(
-      @RequestParam( name = "userId") String userId) throws Exception{
-    return ResponseEntity.ok(new ResponseDTO<>(cartService.getCartByUser(Long.parseLong(userId)), "200", "Success", true));
-  }
+  @PostMapping(value = "/add")
+  public ResponseEntity<ResponseDTO<?>> addCart() {
+    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User user = null;
+    if (principal instanceof String && !((String) principal).isEmpty()) {
+      user = userService.findByEmail((String) principal);
+    }
+    System.out.println(principal);
 
-  @PostMapping()
-  public ResponseEntity<ResponseDTO<String>> createCartByUser(@RequestBody Cart cart) throws Exception{
-    return ResponseEntity.ok(new ResponseDTO<>(cartService.createCartByUser(cart), "200", "Success", true));
-  }
-
-  @PatchMapping("/{id}")
-  public ResponseEntity<ResponseDTO<String>> updateCartItem(
-          @RequestBody Cart cartUpdate, @PathVariable("id") Long id
-  ) throws Exception {
-    return ResponseEntity.ok(new ResponseDTO<>(cartService.updateCart(cartUpdate, id), "200", "Success", true));
-  }
-
-  @DeleteMapping("/{id}")
-  public ResponseEntity<ResponseDTO<Object>> deleteCartItem(@PathVariable("id") Long id) throws Exception{
-    return ResponseEntity.ok(new ResponseDTO<>(cartService.deleteCart(id), "", "Success", true));
+    return ResponseEntity.ok(new ResponseDTO<>("Add success", "200", "Success", true));
   }
 }

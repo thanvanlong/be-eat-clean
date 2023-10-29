@@ -16,22 +16,18 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "carts")
+@Table(name = "cart")
 public class Cart  {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-  private Long userId;
-  private Long bookId;
   private int quantity;
-  private int status;
-  @Transient
+  @Enumerated
+  private Status status;
   @ManyToOne
   private User user;
-  @Transient
   @ManyToOne
   private Food foods;
-
   @CreationTimestamp
   private LocalDateTime createAt;
   @UpdateTimestamp

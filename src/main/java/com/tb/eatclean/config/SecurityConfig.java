@@ -1,5 +1,6 @@
 package com.tb.eatclean.config;
 
+import com.tb.eatclean.service.cart.CartService;
 import com.tb.eatclean.service.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,19 +38,19 @@ import java.util.List;
         jsr250Enabled = true)
 public class SecurityConfig {
 
-    private final String[] WHITE_LIST = {"/swagger-ui/*", "/v3/api-docs/**", "/v3/api-docs/swagger-config"};
+    private final String[] WHITE_LIST = {"/swagger-ui/*", "/v3/api-docs/**", "/v3/api-docs/swagger-config", "/products/get"};
 
     @Autowired
     UserService userService;
-    @Bean
-    public PasswordEncoder bCryptPasswordEncoder(){
-        return PassEncoder.getInstance();
-    }
+
+    @Autowired
+    PasswordEncoder bCryptPasswordEncoder;
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userService);
-        authenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
+        authenticationProvider.setPasswordEncoder(bCryptPasswordEncoder);
         return authenticationProvider;
     }
 
@@ -62,7 +63,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userService);
-        authProvider.setPasswordEncoder(bCryptPasswordEncoder());
+        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
         return new ProviderManager(authProvider);
     }
     @Bean
@@ -75,7 +76,7 @@ public class SecurityConfig {
         http.authorizeRequests().requestMatchers(HttpMethod.POST, "/api/v1/users/**").permitAll();
         http.authorizeRequests().requestMatchers(HttpMethod.GET, "/api/v1/users/active").permitAll();
         http.authorizeRequests().requestMatchers(WHITE_LIST).permitAll();
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().anyRequest().permitAll();
         http.addFilter(customeAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
@@ -91,7 +92,7 @@ public class SecurityConfig {
         configuration.setAllowedMethods(List.of("HEAD",
                 "GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowCredentials(true);
-        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "ContentType", "Accept", "*"));
+        configuration.setAllowedHeaders(List.of("*"));
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

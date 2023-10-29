@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepo userRepo;
-    private final PassEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     @Override
     @Transactional
 
