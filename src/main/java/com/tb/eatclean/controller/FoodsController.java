@@ -155,7 +155,7 @@ public class FoodsController {
         cartService.save(cart);
         return ResponseEntity.ok(new ResponseDTO<>(true, "200", "Success", true));
       } else {
-        cart.setQuantity(cart.getQuantity() + food.getOrderCount());
+        cart.setQuantity(food.getOrderCount());
         cartService.save(cart);
         return ResponseEntity.ok(new ResponseDTO<>(false, "200", "Success", true));
       }
@@ -177,6 +177,23 @@ public class FoodsController {
     if (user != null) {
       List<Cart> list = cartService.getCartByUser(user);
       return ResponseEntity.ok(new ResponseDTO<>(list, "200", "Success", true));
+    } else {
+      return ResponseEntity.ok(new ResponseDTO<>("Vui long dang nhap", "400", "Fail", false));
+    }
+  }
+
+  @GetMapping("/count-cart")
+  public ResponseEntity<ResponseDTO<?>> countCart() {
+    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    System.out.println(principal);
+    User user = null;
+    if (principal instanceof String && !((String) principal).isEmpty()) {
+      user = userService.findByEmail((String) principal);
+    }
+
+    if (user != null) {
+      int totalOrder = cartService.countCartByUser(user);
+      return ResponseEntity.ok(new ResponseDTO<>(totalOrder, "200", "Success", true));
     } else {
       return ResponseEntity.ok(new ResponseDTO<>("Vui long dang nhap", "400", "Fail", false));
     }

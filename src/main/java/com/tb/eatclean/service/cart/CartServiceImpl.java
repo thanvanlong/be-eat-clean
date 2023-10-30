@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.tb.eatclean.entity.carts.Cart;
+import com.tb.eatclean.entity.carts.Status;
 import com.tb.eatclean.entity.product.Food;
 import com.tb.eatclean.entity.user.User;
 import com.tb.eatclean.repo.CartRepo;
@@ -40,6 +41,6 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public int countCartByUser(User user) {
-        return cartRepo.countByUser(user);
+        return cartRepo.countByUserAndStatus(user, Status.PENDING);
     }
 }
