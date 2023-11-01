@@ -6,19 +6,26 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import com.mservice.config.Environment;
+import com.mservice.enums.RequestType;
+import com.mservice.models.PaymentResponse;
+import com.mservice.processor.CreateOrderMoMo;
+import com.mservice.shared.utils.LogUtils;
+import com.tb.eatclean.entity.bill.Bill;
+import com.tb.eatclean.entity.bill.BillStatus;
 import com.tb.eatclean.entity.carts.Cart;
 import com.tb.eatclean.entity.carts.Status;
 import com.tb.eatclean.entity.categorie.Categorie;
-import com.tb.eatclean.entity.product.Food;
+import com.tb.eatclean.entity.product.Product;
 import com.tb.eatclean.entity.ResponseDTO;
 import com.tb.eatclean.entity.user.User;
+import com.tb.eatclean.service.bill.BillService;
 import com.tb.eatclean.service.cart.CartService;
 import com.tb.eatclean.service.categorie.CategoriesService;
 import com.tb.eatclean.service.foods.FoodsService;
-import com.tb.eatclean.service.foods.SortType;
 import com.tb.eatclean.service.user.UserService;
+import com.tb.eatclean.utils.StringUtils;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,35 +50,55 @@ public class FoodsController {
 
   @Autowired
   private CartService cartService;
-//  @PostConstruct
+
+  @Autowired
+  private BillService billService;
+  @PostConstruct
   public void init() {
-    Categorie categorie = new Categorie();
-    categorie.setLabel("Loai mot nhe");
+//    Categorie categorie = new Categorie();
+//    categorie.setLabel("Loai mot nhe");
+//    categorie.setKey(categorie.getLabel());
+//
+//    categoriesService.save(categorie);
+//
+//    for (int i = 0; i < 30; i++) {
+//      Product product = new Product();
+//      product.setName("Thuc an loai mot " + i);
+//      product.setCategory(new HashSet<>(categoriesService.getAllCategories()));
+//      product.setQuantity(100);
+//      product.setPrice(100000);
+//      product.setDescription("sdfghjkldfghjkl;");
+//      product.setSlug("dfghjkl;fghjkl;/");
+//      product.setShortDescription("sdfghjkl;dfghjkl;'");
+//      List<String> strings = new ArrayList<>();
+//      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
+//      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
+//      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
+//      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
+//
+//      product.setImgs(strings);
+//
+//      try {
+//        foodsService.create(product);
+//      } catch (Exception e) {
+//        throw new RuntimeException(e);
+//      }
+//    }
 
-    categoriesService.save(categorie);
+    LogUtils.init();
+    String requestId = String.valueOf(System.currentTimeMillis());
+    String orderId = String.valueOf(System.currentTimeMillis());
+    long amount = 5000;
+    String orderInfo = "Pay With MoMo";
+    String returnURL = "momosdk:/";
+    String notifyURL = "momosdk:/";
 
-    for (int i = 0; i < 50; i++) {
-      Food food = new Food();
-      food.setName("Thuc an loai mot " + i);
-//      food.setCategory(new HashSet<>(categoriesService.getAllCategories()));
-      food.setQuantity(100);
-      food.setPrice(100000);
-      food.setDescription("sdfghjkldfghjkl;");
-      food.setSlug("dfghjkl;fghjkl;/");
-      food.setShortDescription("sdfghjkl;dfghjkl;'");
-      List<String> strings = new ArrayList<>();
-      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
-      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
-      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
-      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
+    Environment environment = Environment.selectEnv("dev");
+    try {
+      PaymentResponse captureWalletMoMoResponse = CreateOrderMoMo.process(environment, orderId, requestId, Long.toString(amount), orderInfo, returnURL, notifyURL, "", RequestType.CAPTURE_WALLET, Boolean.TRUE);
+      System.out.println(captureWalletMoMoResponse.getQrCodeUrl());
+    } catch (Exception e) {
 
-      food.setImgs(strings);
-
-      try {
-        foodsService.create(food);
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
     }
   }
 
@@ -107,18 +134,18 @@ public class FoodsController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ResponseDTO<Food>> get(@PathVariable("id") Long id) throws Exception{
+  public ResponseEntity<ResponseDTO<Product>> get(@PathVariable("id") Long id) throws Exception{
     return ResponseEntity.ok(new ResponseDTO<>(foodsService.getFoodsById(id), "200", "Success", true));
   }
 
   @PostMapping()
-  public ResponseEntity<ResponseDTO<String>> create(@RequestBody Food foods) throws Exception{
+  public ResponseEntity<ResponseDTO<String>> create(@RequestBody Product foods) throws Exception{
     return ResponseEntity.ok(new ResponseDTO<>(foodsService.create(foods), "200", "Success", true));
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<ResponseDTO<String>> update(
-      @RequestBody Food bookUpdate,
+      @RequestBody Product bookUpdate,
       @PathVariable Long id
   ) {
     return ResponseEntity.ok(new ResponseDTO<>(foodsService.update(id, bookUpdate), "200", "Success", true));
@@ -136,7 +163,7 @@ public class FoodsController {
 
 
   @PostMapping(value = "/add-cart", consumes = {MediaType.ALL_VALUE})
-  public ResponseEntity<ResponseDTO<?>> addCart(@RequestBody Food food) {
+  public ResponseEntity<ResponseDTO<?>> addCart(@RequestBody Product food) {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     System.out.println(principal);
     User user = null;
@@ -197,6 +224,63 @@ public class FoodsController {
     } else {
       return ResponseEntity.ok(new ResponseDTO<>("Vui long dang nhap", "400", "Fail", false));
     }
+  }
+
+
+  @PostMapping("/order")
+  public ResponseEntity<ResponseDTO<?>> order(@RequestBody Bill bill) {
+    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    System.out.println(principal);
+    User user = null;
+    if (principal instanceof String && !((String) principal).isEmpty()) {
+      user = userService.findByEmail((String) principal);
+    }
+
+    if (user != null) {
+      List<Cart> carts = bill.getCarts();
+      for (Cart cart :
+              carts) {
+        if (cart != null) {
+          cart.setStatus(Status.DONE);
+          cartService.save(cart);
+          Product product = cart.getFoods();
+          product.setQuantity(product.getQuantity() - cart.getQuantity());
+          foodsService.save(product);
+        }
+      }
+
+      bill.setBillStatus(BillStatus.PENDING);
+
+      billService.save(bill);
+
+
+      LogUtils.init();
+      String requestId = String.valueOf(System.currentTimeMillis());
+      String orderId = String.valueOf(System.currentTimeMillis());
+      long amount = bill.getPrice();
+      String orderInfo = "Pay With MoMo";
+      String returnURL = "momosdk:/";
+      String notifyURL = "momosdk:/";
+
+      Environment environment = Environment.selectEnv("dev");
+      try {
+        PaymentResponse captureWalletMoMoResponse = CreateOrderMoMo.process(environment, orderId, requestId, Long.toString(amount), orderInfo, returnURL, notifyURL, "", RequestType.CAPTURE_WALLET, Boolean.TRUE);
+        return ResponseEntity.ok(new ResponseDTO<>(captureWalletMoMoResponse.getQrCodeUrl(), "200", "Success", true));
+      } catch (Exception e) {
+        return ResponseEntity.ok(new ResponseDTO<>("Thanh toan that bai", "400", "Fail", false));
+      }
+
+    }
+
+    return null;
+  }
+
+
+  @GetMapping("/update-bill")
+  public ResponseEntity<ResponseDTO<?>> updateBill(@RequestParam Map<String, Object> data) {
+    System.out.println(data);
+
+    return null;
   }
 
 }

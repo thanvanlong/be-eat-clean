@@ -1,9 +1,12 @@
 package com.tb.eatclean.utils;
 
 
+import com.tb.eatclean.entity.bill.Bill;
+import com.tb.eatclean.entity.carts.Cart;
 import org.springframework.stereotype.Service;
 
 import java.text.Normalizer;
+import java.util.List;
 import java.util.UUID;
 
 @Service()
@@ -28,4 +31,5 @@ public class StringUtils {
         String uuid = UUID.randomUUID().toString();
         return uuid + slugify(input);
     }
+
 }

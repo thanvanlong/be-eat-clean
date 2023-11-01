@@ -1,6 +1,6 @@
 package com.tb.eatclean.dto;
 
-import com.tb.eatclean.entity.product.Food;
+import com.tb.eatclean.entity.product.Product;
 import com.tb.eatclean.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,5 +15,5 @@ public class CommentDto {
   private String comment;
   private String date;
   private int rate;
-  private Food foods;
+  private Product foods;
 }

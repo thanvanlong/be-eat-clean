@@ -4,5 +4,5 @@ public enum BillStatus {
   PENDING,
   COMPLETED,
   CANCEL,
-  NULL
+  FAIL
 }

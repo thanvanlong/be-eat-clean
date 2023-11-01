@@ -1,6 +1,7 @@
 package com.tb.eatclean.entity.bill;
 
 import com.tb.eatclean.entity.carts.Cart;
+import com.tb.eatclean.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,29 +18,27 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "bills")
+@Table(name = "bill")
 public class Bill  {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-  private String date;
-  private BillStatus status;
-  private Long userId;
+  @ManyToOne
+  private User user;
+  @OneToMany
+  private List<Cart> carts;
+  @Enumerated
+  private MethodType methodType = MethodType.MOMO;
+  @Enumerated
+  private BillStatus billStatus;
+
   @CreationTimestamp
   private LocalDateTime createAt;
   @UpdateTimestamp
   private LocalDateTime updateAt;
-
-  @Column(name = "list_books",columnDefinition = "json")
-  private String listBooks;
-
-  @Column(name = "user_info",columnDefinition = "json")
-  private String userInfo;
-
-  @Transient
-  @OneToMany
-  private List<Cart> listProducts;
-
-  @Transient
-  private Map<String, Object> info;
+  private String username;
+  private String address;
+  private String phone;
+  private String note;
+  private long price;
 }

@@ -1,14 +1,9 @@
 package com.tb.eatclean.service.comment;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.tb.eatclean.dto.CommentDto;
 import com.tb.eatclean.entity.comment.Comment;
-import com.tb.eatclean.entity.product.Food;
-import com.tb.eatclean.entity.user.User;
 import com.tb.eatclean.repo.CommentRepo;
 import com.tb.eatclean.repo.UserRepo;
 import com.tb.eatclean.service.foods.FoodsService;

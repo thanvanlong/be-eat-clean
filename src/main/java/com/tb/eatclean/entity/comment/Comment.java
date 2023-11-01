@@ -1,6 +1,6 @@
 package com.tb.eatclean.entity.comment;
 
-import com.tb.eatclean.entity.product.Food;
+import com.tb.eatclean.entity.product.Product;
 import com.tb.eatclean.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "comments")
+@Table(name = "comment")
 public class Comment  {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,7 +25,7 @@ public class Comment  {
   @ManyToOne
   private User user;
   @ManyToOne
-  private Food food;
+  private Product food;
   @CreationTimestamp
   private LocalDateTime createAt;
   @UpdateTimestamp

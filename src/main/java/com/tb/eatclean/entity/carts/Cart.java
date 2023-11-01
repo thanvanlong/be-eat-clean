@@ -1,6 +1,6 @@
 package com.tb.eatclean.entity.carts;
 
-import com.tb.eatclean.entity.product.Food;
+import com.tb.eatclean.entity.product.Product;
 import com.tb.eatclean.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ public class Cart  {
   @ManyToOne
   private User user;
   @ManyToOne
-  private Food foods;
+  private Product foods;
   @CreationTimestamp
   private LocalDateTime createAt;
   @UpdateTimestamp

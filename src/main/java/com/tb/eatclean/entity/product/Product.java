@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "foods")
-public class Food  {
+@Table(name = "product")
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -46,13 +46,13 @@ public class Food  {
     @Transient
     private int orderCount;
 
-    public void setCategory(List<Long> idsCategory){
-        this.categories = idsCategory.stream().map(idCategory -> {
-            Categorie categories1 = new Categorie();
-            categories1.setId(idCategory);
-            return categories1;
-        }).collect(Collectors.toSet());
-    }
+//    public void setCategory(List<Long> idsCategory){
+//        this.categories = idsCategory.stream().map(idCategory -> {
+//            Categorie categories1 = new Categorie();
+//            categories1.setId(idCategory);
+//            return categories1;
+//        }).collect(Collectors.toSet());
+//    }
 
     public void setName(String name) {
         this.name = name;
@@ -60,7 +60,7 @@ public class Food  {
     }
 
 
-//    public void setCategory(Set<Categorie> categories) {
-//        this.categories = categories;
-//    }
+    public void setCategory(Set<Categorie> categories) {
+        this.categories = categories;
+    }
 }

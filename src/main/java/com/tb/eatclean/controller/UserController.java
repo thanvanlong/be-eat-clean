@@ -57,21 +57,6 @@ public class UserController {
 
         userService.save(user);
 
-//        Thread.sleep(1000);
-
-        User user1 = new User();
-        user.setPassword("123123");
-        user.setEmail("longthan1@gmail.com");
-
-        userService.save(user1);
-
-//        Thread.sleep(1000);
-
-        User user2 = new User();
-        user.setPassword("123123");
-        user.setEmail("longthan2@gmail.com");
-
-        userService.save(user2);
     }
 
     @PreAuthorize("permitAll()")
