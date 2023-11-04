@@ -2,10 +2,8 @@ package com.tb.eatclean.controller;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import com.google.gson.Gson;
 import com.mservice.config.Environment;
@@ -25,6 +23,7 @@ import com.tb.eatclean.entity.product.Product;
 import com.tb.eatclean.entity.ResponseDTO;
 import com.tb.eatclean.entity.promotion.Promotion;
 import com.tb.eatclean.entity.user.User;
+import com.tb.eatclean.repo.FoodRepo;
 import com.tb.eatclean.service.bill.BillService;
 import com.tb.eatclean.service.blog.BlogService;
 import com.tb.eatclean.service.cart.CartService;
@@ -33,9 +32,18 @@ import com.tb.eatclean.service.comment.CommentService;
 import com.tb.eatclean.service.foods.FoodsService;
 import com.tb.eatclean.service.promotion.PromotionService;
 import com.tb.eatclean.service.user.UserService;
+import com.tb.eatclean.utils.CloudinaryUtils;
 import com.tb.eatclean.utils.StringUtils;
+import io.swagger.annotations.ApiParam;
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.servlet.http.HttpServletResponse;
+import org.hibernate.annotations.Check;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -43,6 +51,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 //import javax.persistence.EntityManager;
 
@@ -53,6 +62,9 @@ public class FoodsController {
 
   @Autowired
   private FoodsService foodsService;
+
+  @Autowired
+  private FoodRepo foodRepo;
 
   @Autowired
   private CategoriesService categoriesService;
@@ -162,6 +174,112 @@ public class FoodsController {
     return ResponseEntity.ok(new ResponseDTO<>(foodsService.pagingSortSearch(page, limit, search), "200", "Success", true));
   }
 
+  @PostMapping(value = "/create-product",  produces = {MediaType.APPLICATION_JSON_VALUE})
+  public ResponseEntity<ResponseDTO<String>> createProduct(@RequestParam("name") String name,
+                                                      @RequestParam(value = "price", defaultValue = "10000") double price,
+                                                      @RequestParam(value = "quantity", defaultValue = "10") int quantity,
+                                                      @RequestParam(value = "slug", defaultValue = "") String slug,
+                                                      @RequestParam(value = "shortDescription", defaultValue = "") String shortDescription,
+                                                      @RequestParam(value = "description", required = false, defaultValue = "") String description,
+                                                      @RequestParam(value = "categories", required = false) Set<Long> categories,
+
+                                                      @RequestParam("files") MultipartFile[] files) {
+
+    String []typeImg = {"image/png", "image/jpeg", "image/jpg"};
+    for (MultipartFile file : files){
+      if (!Arrays.asList(typeImg).contains(file.getContentType())) {
+        return ResponseEntity.ok(new ResponseDTO<String>("Thể loại của ảnh không hợp lệ", "404", "Failed", false));
+      }
+    }
+
+    Product product = new Product();
+    product.setName(name);
+    product.setPrice(price);
+    product.setQuantity(quantity);
+    product.setSlug(slug);
+    product.setDescription(description);
+    product.setShortDescription(shortDescription);
+
+    if(categories != null)
+      product.setCategories(categories);
+
+    List<String> imgUrls = new ArrayList<>();
+
+    try {
+      for (MultipartFile file : files){
+        if (!Arrays.asList(typeImg).contains(file.getContentType())) {
+          return ResponseEntity.ok(new ResponseDTO<String>("Thể loại của ảnh không hợp lệ", "404", "Failed", false));
+        }
+        imgUrls.add(CloudinaryUtils.uploadImg(file.getBytes(), StringUtils.uuidFileName(name)));
+      }
+      product.setImgs(imgUrls);
+
+    } catch (IOException e) {
+      return ResponseEntity.ok(new ResponseDTO<String>("Upload ảnh lên không thành công", "404", "Failed", false));
+    }
+
+
+    foodRepo.save(product);
+    return ResponseEntity.ok(new ResponseDTO<>("Tao product thanh cong!", "200", "Success", true));
+  }
+
+  @PutMapping(value = "/update-product", produces = {MediaType.APPLICATION_JSON_VALUE})
+  public ResponseEntity<ResponseDTO<String>> updateRoom(
+          @RequestParam(value = "id") Long id,
+          @RequestParam("name") String name,
+          @RequestParam(value = "price", required = false) Double price,
+          @RequestParam(value = "quantity", required = false) Integer quantity,
+          @RequestParam(value = "slug", required = false) String slug,
+          @RequestParam(value = "shortDescription", required = false) String shortDescription,
+          @RequestParam(value = "description", required = false) String description,
+          @RequestParam(value = "categories", required = false) Set<Long> categories,
+          @RequestParam(value = "imgs", required = false) List<String> imgs,
+          @RequestParam(value = "files", required = false)
+          @ApiParam(value = "Danh sách tệp ảnh", required = false, type = "string", format = "binary", allowMultiple = true)
+          MultipartFile[] files) throws Exception{
+
+    Product product = foodsService.get(id);
+
+    if(name != null) product.setName(name);
+    if(description != null) product.setDescription(description);
+    if(categories != null) product.setCategories(categories);
+    if(price != null) product.setPrice(price);
+    if(shortDescription != null) product.setShortDescription(shortDescription);
+    if(slug != null) product.setSlug(slug);
+    if(quantity != null) product.setQuantity(quantity);
+
+    List<String> imgUrls = new ArrayList<>();
+    if(imgs != null) {
+      imgUrls.addAll(imgs);
+    }
+
+    if (files != null) {
+      String []typeImg = {"image/png", "image/jpeg", "image/jpg"};
+      for (MultipartFile file : files){
+        if (!Arrays.asList(typeImg).contains(file.getContentType())) {
+          return ResponseEntity.ok(new ResponseDTO<String>("Thể loại của ảnh không hợp lệ", "404", "Failed", false));
+        }
+      }
+
+      try {
+        for (MultipartFile file : files){
+          if (!Arrays.asList(typeImg).contains(file.getContentType())) {
+            return ResponseEntity.ok(new ResponseDTO<String>("Thể loại của ảnh không hợp lệ", "404", "Failed", false));
+          }
+          imgUrls.add(CloudinaryUtils.uploadImg(file.getBytes(), StringUtils.uuidFileName(name)));
+        }
+
+      } catch (IOException e) {
+        return ResponseEntity.ok(new ResponseDTO<String>("Upload ảnh lên không thành công", "404", "Failed", false));
+      }
+    }
+    product.setImgs(imgUrls);
+
+    foodRepo.save(product);
+
+    return ResponseEntity.ok(new ResponseDTO<>("Update Room Done!", "200", "Success", true));
+  }
+
   @GetMapping("/{id}")
   public ResponseEntity<ResponseDTO<Product>> get(@PathVariable("id") Long id) throws Exception {
     Product product = foodsService.getFoodsById(id);
@@ -194,21 +312,6 @@ public class FoodsController {
   @GetMapping("/related/{id}")
   public ResponseEntity<ResponseDTO<Product>> getRelated(@PathVariable("id") Long id) throws Exception{
     return ResponseEntity.ok(new ResponseDTO<>(foodsService.getFoodsById(id), "200", "Success", true));
-  }
-
-
-
-  @PostMapping()
-  public ResponseEntity<ResponseDTO<String>> create(@RequestBody Product foods) throws Exception{
-    return ResponseEntity.ok(new ResponseDTO<>(foodsService.create(foods), "200", "Success", true));
-  }
-
-  @PutMapping("/{id}")
-  public ResponseEntity<ResponseDTO<String>> update(
-      @RequestBody Product bookUpdate,
-      @PathVariable Long id
-  ) {
-    return ResponseEntity.ok(new ResponseDTO<>(foodsService.update(id, bookUpdate), "200", "Success", true));
   }
 
   @DeleteMapping("/{id}")

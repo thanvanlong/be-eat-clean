@@ -65,8 +65,11 @@ public class FoodsServiceImpl implements FoodsService {
     }
 
     @Override
-    public Product get(Long id) {
-        return null;
+    public Product get(Long id) throws Exception{
+        Optional<Product> foods = foodsRepo.findById(id);
+
+        if(foods.isPresent()) return foods.get();
+        throw new Exception("Khong co san pham nay");
     }
 
     @Override

@@ -14,7 +14,7 @@ public interface FoodsService {
 
     Map<String, Object> pagingSortSearch(int page, int limit, String search);
 
-    Product get(Long id);
+    Product get(Long id) throws Exception;
 
     Product getFoodsById(Long id) throws Exception;
 

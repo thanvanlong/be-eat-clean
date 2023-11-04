@@ -63,7 +63,11 @@ public class Product {
     }
 
 
-    public void setCategory(Set<Categorie> categories) {
-        this.categories = categories;
+    public void setCategories(Set<Long> categoryIds) {
+        this.categories = categoryIds.stream().map(id -> {
+            Categorie categorie = new Categorie();
+            categorie.setId(id);
+            return categorie;
+        }).collect(Collectors.toSet());
     }
 }
