@@ -314,8 +314,8 @@ public class FoodsController {
     return ResponseEntity.ok(new ResponseDTO<>(foodsService.getFoodsById(id), "200", "Success", true));
   }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<ResponseDTO<Object>> delete(@PathVariable("id") Long id) {
+  @DeleteMapping("/delete-product/{id}")
+  public ResponseEntity<ResponseDTO<String>> delete(@PathVariable("id") Long id) throws Exception{
     return ResponseEntity.ok(new ResponseDTO<>(foodsService.remove(id), "200", "Success", true));
   }
 
@@ -505,7 +505,7 @@ public class FoodsController {
   }
 
   @GetMapping("/get-blog/{id}")
-  public ResponseEntity<ResponseDTO<?>> getBlogById(@PathVariable("id") long id) {
+  public ResponseEntity<ResponseDTO<?>> getBlogById(@PathVariable("id") long id) throws Exception{
     Blog blog = blogService.getById(id);
     return ResponseEntity.ok(new ResponseDTO<>(blog, "200", "Success", true));
   }

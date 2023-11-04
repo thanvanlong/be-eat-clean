@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface BlogService {
     Map<String, Object> pagingSort(int page, int limit);
-    Blog getById(long id);
+    Blog getById(long id) throws Exception;
 
     Blog save(Blog blog);
 }

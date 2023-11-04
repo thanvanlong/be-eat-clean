@@ -14,4 +14,6 @@ public class Blog {
     @Column(columnDefinition="text")
     private String content;
     private String imgThumbnail;
+    @Enumerated
+    private BlogState blogState;
 }

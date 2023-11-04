@@ -37,9 +37,10 @@ public class BlogServiceImpl implements BlogService{
     }
 
     @Override
-    public Blog getById(long id) {
+    public Blog getById(long id) throws Exception{
         Optional<Blog> data = blogRepo.findById(id);
-        return data.isPresent() ? data.get() : null;
+        if(data.isPresent()) return data.get();
+        throw new Exception("Khong co blog");
     }
 
     @Override

@@ -22,7 +22,7 @@ public interface FoodsService {
 
     String update(Long id, Product foods);
 
-    Object remove(Long id);
+    String remove(Long id) throws Exception;
 
     Product save(Product product);
 

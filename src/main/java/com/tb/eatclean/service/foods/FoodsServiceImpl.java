@@ -98,8 +98,10 @@ public class FoodsServiceImpl implements FoodsService {
     }
 
     @Override
-    public Object remove(Long id) {
-        return null;
+    public String remove(Long id) throws Exception{
+        Product product = get(id);
+        this.foodsRepo.delete(product);
+        return "Da xoa thanh cong";
     }
 
     @Override
