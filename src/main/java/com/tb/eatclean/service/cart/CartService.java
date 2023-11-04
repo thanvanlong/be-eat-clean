@@ -16,4 +16,8 @@ public interface CartService {
     List<Cart> getCartByUser(User user);
 
     int countCartByUser(User user);
+
+    void delete(Cart cart);
+
+    Cart getById(Long id);
 }

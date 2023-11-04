@@ -30,7 +30,7 @@ public class CartServiceImpl implements CartService {
 
   @Override
   public Cart getByFood(Product food) {
-      Optional<Cart> cart = cartRepo.findByFoods(food);
+      Optional<Cart> cart = cartRepo.findByFoodsAndStatus(food, Status.PENDING);
       return cart.orElse(null);
   }
 
@@ -42,5 +42,15 @@ public class CartServiceImpl implements CartService {
     @Override
     public int countCartByUser(User user) {
         return cartRepo.countByUserAndStatus(user, Status.PENDING);
+    }
+
+    @Override
+    public void delete(Cart cart) {
+        cartRepo.delete(cart);
+    }
+
+    @Override
+    public Cart getById(Long id) {
+        return cartRepo.findById(id).get();
     }
 }

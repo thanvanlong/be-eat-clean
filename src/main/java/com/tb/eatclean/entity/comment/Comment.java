@@ -1,5 +1,6 @@
 package com.tb.eatclean.entity.comment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tb.eatclean.entity.product.Product;
 import com.tb.eatclean.entity.user.User;
 import jakarta.persistence.*;
@@ -24,7 +25,7 @@ public class Comment  {
   private int rate;
   @ManyToOne
   private User user;
-  @ManyToOne
+  @Transient
   private Product food;
   @CreationTimestamp
   private LocalDateTime createAt;

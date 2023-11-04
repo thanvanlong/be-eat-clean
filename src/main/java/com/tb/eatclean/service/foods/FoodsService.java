@@ -24,7 +24,7 @@ public interface FoodsService {
 
     Object remove(Long id);
 
-    void save(Product product);
+    Product save(Product product);
 
     Map<String, Object> filter(int page, int limit, String search, String label, String filter, String sortType);
 }

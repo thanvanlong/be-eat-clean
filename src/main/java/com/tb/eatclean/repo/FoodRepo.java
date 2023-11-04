@@ -1,5 +1,6 @@
 package com.tb.eatclean.repo;
 
+import com.tb.eatclean.entity.categorie.Categorie;
 import com.tb.eatclean.entity.product.Product;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;

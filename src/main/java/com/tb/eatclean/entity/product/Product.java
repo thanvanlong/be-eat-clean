@@ -44,6 +44,9 @@ public class Product {
     private String searchName;
 
     @Transient
+    private boolean canComment;
+
+    @Transient
     private int orderCount;
 
 //    public void setCategory(List<Long> idsCategory){

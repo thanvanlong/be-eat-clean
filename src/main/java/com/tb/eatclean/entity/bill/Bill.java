@@ -1,6 +1,7 @@
 package com.tb.eatclean.entity.bill;
 
 import com.tb.eatclean.entity.carts.Cart;
+import com.tb.eatclean.entity.promotion.Promotion;
 import com.tb.eatclean.entity.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -41,4 +42,6 @@ public class Bill  {
   private String phone;
   private String note;
   private long price;
+  @ManyToOne
+  private Promotion promotion;
 }

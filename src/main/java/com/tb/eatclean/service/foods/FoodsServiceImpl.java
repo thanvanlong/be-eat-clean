@@ -72,9 +72,15 @@ public class FoodsServiceImpl implements FoodsService {
     @Override
     public Product getFoodsById(Long id) throws Exception{
         Optional<Product> foods = foodsRepo.findById(id);
-        if(foods.isPresent()) return foods.get();
-        throw new Exception("Khong co do an nay");
+        if(foods.isPresent()) {
+            Product product = foods.get();
+
+            return foods.get();
+        } else {
+            return null;
+        }
     }
+
 
     @Override
     @Transactional
@@ -94,8 +100,8 @@ public class FoodsServiceImpl implements FoodsService {
     }
 
     @Override
-    public void save(Product product) {
-        foodsRepo.save(product);
+    public Product save(Product product) {
+        return foodsRepo.save(product);
     }
 
     @Override

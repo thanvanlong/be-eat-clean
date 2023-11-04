@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CartRepo extends JpaRepository<Cart, Long> {
-    Optional<Cart> findByFoods(Product food);
+    Optional<Cart> findByFoodsAndStatus(Product food, Status status);
     List<Cart> findByUserAndStatus(User user, Status status);
 
     int countByUserAndStatus(User user, Status status);

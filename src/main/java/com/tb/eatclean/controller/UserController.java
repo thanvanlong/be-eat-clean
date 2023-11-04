@@ -49,7 +49,7 @@ public class UserController {
 
 
 
-//    @PostConstruct
+    @PostConstruct
     public void init() throws Exception {
         User user = new User();
         user.setPassword("123123");
