@@ -79,6 +79,18 @@ public class UserController {
         return ResponseEntity.ok(new ResponseDTO<>(null, "200", "Success", true));
     }
 
+    @PutMapping("update/{id}")
+    public ResponseEntity<ResponseDTO<String>> update(@PathVariable("id") Long id, @RequestBody User payload) {
+        try {
+            payload.setId(id);
+            userService.save(payload);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDTO<>(null, "400", e.getMessage(), false));
+        }
+
+        return ResponseEntity.ok(new ResponseDTO<>("update thanh cong", "200", "Success", true));
+    }
+
     @PreAuthorize("permitAll()")
     @GetMapping("/active")
     public void activeUser(@RequestParam("token") String token, HttpServletResponse response) {
