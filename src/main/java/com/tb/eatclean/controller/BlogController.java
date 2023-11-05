@@ -6,10 +6,14 @@ import com.tb.eatclean.entity.blog.Blog;
 import com.tb.eatclean.entity.blog.BlogState;
 import com.tb.eatclean.repo.BlogRepo;
 import com.tb.eatclean.service.blog.BlogService;
+import com.tb.eatclean.utils.CloudinaryUtils;
+import com.tb.eatclean.utils.StringUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @CrossOrigin
@@ -21,31 +25,42 @@ public class BlogController {
     @Autowired
     private BlogRepo blogRepo;
 
-    @PostMapping()
-    public ResponseEntity<ResponseDTO<String>> save(@RequestBody AddBlogDto body) throws Exception{
+    @PostMapping(value = "",produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ResponseDTO<String>> save(
+            @RequestParam(value = "title") String title,
+            @RequestParam(value = "content") String content,
+            @RequestParam(value = "description", defaultValue = "", required = false) String description,
+            @RequestParam(value = "blogState", defaultValue = "Active", required = false) BlogState blogState,
+            @RequestParam(value = "file", required = false) MultipartFile file
+    ) throws Exception{
         Blog blog = new Blog();
 
-        blog.setDescription(body.getDescription());
-        blog.setTitle(body.getTitle());
-        blog.setContent(body.getContent());
-        blog.setImgThumbnail(body.getSetImgThumbnail());
+        blog.setDescription(description);
+        blog.setTitle(title);
+        blog.setContent(content);
+        blog.setImgThumbnail(CloudinaryUtils.uploadImg(file.getBytes(), StringUtils.uuidFileName(title)));
+        blog.setBlogState(blogState);
 
         blogService.save(blog);
-
         return ResponseEntity.ok(new ResponseDTO<>("Da them thanh cong" , "200", "Success", true));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ResponseDTO<String>> update(@PathVariable("id") Long id, @RequestBody AddBlogDto body) throws Exception{
+    @PutMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ResponseDTO<String>> update(
+            @RequestParam("id") Long id,
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "content", required = false) String content,
+            @RequestParam(value = "description", defaultValue = "", required = false) String description,
+            @RequestParam(value = "blogState", defaultValue = "Active", required = false) BlogState blogState,
+            @RequestParam(value = "file", required = false) MultipartFile file) throws Exception{
         Blog blog = blogService.getById(id);
-        blog.setDescription(body.getDescription());
-        blog.setTitle(body.getTitle());
-        blog.setContent(body.getContent());
-        blog.setImgThumbnail(body.getSetImgThumbnail());
-        blog.setBlogState(body.getBlogState());
+        blog.setDescription(title);
+        blog.setTitle(content);
+        blog.setContent(description);
+        if(file != null) blog.setImgThumbnail(CloudinaryUtils.uploadImg(file.getBytes(), StringUtils.uuidFileName(title)));
+        blog.setBlogState(blogState);
 
         blogService.save(blog);
-
         return ResponseEntity.ok(new ResponseDTO<>("Cap nhat thanh cong" , "200", "Success", true));
     }
 
@@ -55,7 +70,6 @@ public class BlogController {
         blog.setBlogState(BlogState.Deleted);
 
         blogService.save(blog);
-
         return ResponseEntity.ok(new ResponseDTO<>("Da xoa thanh cong" , "200", "Success", true));
     }
 }
