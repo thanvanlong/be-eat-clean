@@ -31,11 +31,10 @@ public class User implements UserDetails {
     @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     @NotBlank(message = "email is mandatory")
     private String email;
-    @JsonIgnore
     private String password;
     private String name;
     private String address;
-    private String phoneNumber;
+    private String phone;
     private Boolean isActive;
     @Enumerated
     private Collection<Role> roles = new ArrayList<>();

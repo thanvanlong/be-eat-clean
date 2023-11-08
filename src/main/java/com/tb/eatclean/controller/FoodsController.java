@@ -84,7 +84,7 @@ public class FoodsController {
   @Autowired
   private BlogService blogService;
 
-  @PostConstruct
+//  @PostConstruct
   public void init() {
     Categorie categorie = new Categorie();
     categorie.setLabel("Loai mot nhe");
