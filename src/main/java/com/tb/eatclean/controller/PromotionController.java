@@ -27,10 +27,15 @@ public class PromotionController {
     public ResponseEntity<ResponseDTO<Map<String, Object>>> listPromotion(@RequestParam(defaultValue = "0") int page,
                                                                           @RequestParam(defaultValue = "10") int limit,
                                                                           @RequestParam(defaultValue = "id,desc") String[] sort,
-                                                                          @RequestParam(required = false) String search) {
+                                                                          @RequestParam(required = false, defaultValue = "") String search) {
 
         Map<String, Object> promotionPage = promotionService.search(page, limit, search);
         return ResponseEntity.ok(new ResponseDTO<>(promotionPage, "200", "Success", true));
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<ResponseDTO<Promotion>> getOne(@PathVariable("id") Long id) throws Exception{
+        return ResponseEntity.ok(new ResponseDTO<>(promotionService.getById(id), "200", "Success", true));
     }
 
     @PostMapping(value = "/save")
@@ -44,5 +49,11 @@ public class PromotionController {
         promotion.setId(id);
         promotionService.save(promotion);
         return ResponseEntity.ok(new ResponseDTO<>("Da sua thanh cong", "200", "Success", true));
+    }
+
+    @PostMapping(value = "/delete/{id}")
+    public ResponseEntity<ResponseDTO<String>> delete(@PathVariable("id") Long id) throws Exception{
+        promotionService.delete(id);
+        return ResponseEntity.ok(new ResponseDTO<>("Da them thanh cong", "200", "Success", true));
     }
 }

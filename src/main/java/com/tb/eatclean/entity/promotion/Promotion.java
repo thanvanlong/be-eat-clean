@@ -21,7 +21,7 @@ public class Promotion {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    @UniqueElements
+//    @UniqueElements
     private String code;
     private double discount;
     private int quantity;
