@@ -84,37 +84,37 @@ public class FoodsController {
   @Autowired
   private BlogService blogService;
 
-//  @PostConstruct
+  @PostConstruct
   public void init() {
-//    Categorie categorie = new Categorie();
-//    categorie.setLabel("Loai mot nhe");
-//    categorie.setKey(categorie.getLabel());
-//
-//    categoriesService.save(categorie);
-//
-//    for (int i = 0; i < 30; i++) {
-//      Product product = new Product();
-//      product.setName("Thuc an loai mot " + i);
-//      product.setCategory(new HashSet<>(categoriesService.getAllCategories()));
-//      product.setQuantity(100);
-//      product.setPrice(100000);
-//      product.setDescription("sdfghjkldfghjkl;");
-//      product.setSlug("dfghjkl;fghjkl;/");
-//      product.setShortDescription("sdfghjkl;dfghjkl;'");
-//      List<String> strings = new ArrayList<>();
-//      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
-//      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
-//      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
-//      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
-//
-//      product.setImgs(strings);
-//
-//      try {
-//        foodsService.create(product);
-//      } catch (Exception e) {
-//        throw new RuntimeException(e);
-//      }
-//    }
+    Categorie categorie = new Categorie();
+    categorie.setLabel("Loai mot nhe");
+    categorie.setKey(categorie.getLabel());
+
+    categoriesService.save(categorie);
+
+    for (int i = 0; i < 20; i++) {
+      Product product = new Product();
+      product.setName("Thuc an loai mot " + i);
+      product.setCategory(new HashSet<>(categoriesService.getAllCategories()));
+      product.setQuantity(100);
+      product.setPrice(100000);
+      product.setDescription("sdfghjkldfghjkl;");
+      product.setSlug("dfghjkl;fghjkl;/");
+      product.setShortDescription("sdfghjkl;dfghjkl;'");
+      List<String> strings = new ArrayList<>();
+      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
+      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
+      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
+      strings.add("https://kenh14cdn.com/thumb_w/660/2020/7/17/brvn-15950048783381206275371.jpg");
+
+      product.setImgs(strings);
+
+      try {
+        foodsService.create(product);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    }
 
 //    LogUtils.init();
 //    String requestId = String.valueOf(System.currentTimeMillis());
@@ -132,14 +132,14 @@ public class FoodsController {
 //
 //    }
 
-    for (int i = 0; i < 10; i++) {
-      Blog blog = new Blog();
-      blog.setDescription("Ăn sáng là bước quan trọng trong việc duy trì một lối sống lành mạnh và cân bằng dinh dưỡng. Trong thế giới ẩm thực ngày nay, nền tảng ăn kiêng keto đã thu hút sự quan tâm từ rất nhiều bạn trẻ.");
-      blog.setTitle("Thử Ngay 10+ Thực Đơn Bữa Sáng Keto Cho Các Cô Nàng Muốn Giảm Cân, Giữ Dáng");
-      blog.setContent("<p>Ăn sáng là bước quan trọng trong việc duy trì một lối sống lành mạnh và cân bằng dinh dưỡng. Trong thế giới ẩm thực ngày nay, nền tảng ăn kiêng keto đã thu hút sự quan tâm từ rất nhiều bạn trẻ. Với nguồn gốc từ chế độ ăn ít carbohydrate và giàu chất béo,&nbsp;<em>ăn sáng keto&nbsp;</em>đã trở thành một lựa chọn phổ biến cho những người muốn giảm cân và cải thiện sức khỏe. Cùng&nbsp;<a href=\"https://healthyeating.shop/\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(0, 128, 0);\"><strong>Healthy Eating</strong></a>&nbsp;theo dõi bài viết dưới đây để biết thêm nhiều công thức nấu&nbsp;<a href=\"https://healthyeating.shop/blog-giam-can/bua-sang-keto/\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(0, 128, 0);\"><strong>bữa sáng Keto</strong></a>&nbsp;ngon và healthy cho gia đình bạn nhé!</p><p>&nbsp;</p><p class=\"ql-indent-6\"><img src=\"https://healthyeating.shop/wp-content/uploads/2023/06/bua-sang-keto-700x375.jpg\"></p><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 128, 0);\">Một số lợi ích tuyệt vời của bữa sáng Keto mà bạn cần biết</strong></h2><p>&nbsp;</p><p>Ăn sáng keto không chỉ đơn thuần là một chế độ ăn kiêng, mà còn là giúp hỗ trợ cải thiện sức khỏe. Thay vì dựa vào các loại tinh bột như bánh mì, ngũ cốc, hoặc đường, chế độ ăn sáng keto tập trung vào các nguồn protein như trứng, thịt, cá và các nguồn chất béo lành mạnh.</p><p>&nbsp;</p><p>Để hiểu hơn về&nbsp;<a href=\"https://healthyeating.shop/blog-giam-can/che-do-an-keto-la-gi/\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(0, 128, 0);\"><strong>chế độ Keto là gì</strong></a>? Dưới đây là một số lợi ích của&nbsp;<strong><em>ăn sáng theo chế độ keto</em></strong>:</p><p>&nbsp;</p><p><br></p><ul><li><strong><em>Giảm cân:</em></strong>&nbsp;Chế độ ăn sáng keto giúp đốt cháy mỡ thừa và giảm cân một cách hiệu quả.</li><li><strong><em>Kiểm soát đường huyết:</em></strong>&nbsp;<strong><em>Ăn sáng keto</em></strong>&nbsp;giúp kiểm soát mức đường huyết và giảm sự biến động đường huyết.</li><li><strong><em>Tăng cường năng lượng:</em></strong>&nbsp;Chế độ ăn sáng keto tạo ra một nguồn năng lượng ổn định và kéo dài.</li><li><strong><em>Cải thiện tập trung:</em></strong>&nbsp;Việc tiêu thụ chất béo lành mạnh và ít carbohydrate trong bữa sáng keto có thể cải thiện tập trung và sự tinh thần.</li><li><strong><em>Giảm cơn thèm ăn:&nbsp;</em></strong>Ăn sáng keto thường tạo cảm giác no lâu hơn và giảm cơn đói vào buổi trưa.</li><li><strong><em>Cải thiện sức khỏe tim mạch:</em></strong>&nbsp;Chế độ ăn sáng keto có thể giúp giảm triglyceride, tăng hàm lượng cholesterol HDL (cholesterol tốt) và giảm hàm lượng cholesterol LDL (cholesterol xấu).</li></ul><p>&nbsp;</p><p><img src=\"https://healthyeating.shop/wp-content/uploads/2023/06/bua-sang-keto-1-655x394.jpg\"></p><p>&nbsp;</p><p><strong style=\"color: rgb(255, 102, 0);\">&gt;&gt;&gt; Xem thêm:</strong><strong>&nbsp;</strong><a href=\"https://healthyeating.shop/blog-giam-can/thuc-don-keto/\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(0, 128, 0);\"><strong>Thực đơn Keto 28 ngày</strong></a><strong>&nbsp;Giảm Cân Hiệu Quả Nhất</strong></p><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 128, 0);\">Các nguyên tắc cơ bản của bữa sáng Keto</strong></h2><p>&nbsp;</p><p>Để có một&nbsp;<em>bữa sáng keto</em>&nbsp;phù hợp với sức khỏe và thành phần dinh dưỡng, mọi người cần tuân thủ một số nguyên tắc cơ bản:</p><ul><li><strong><em>Giới hạn carbohydrate:</em></strong>&nbsp;Chế độ ăn sáng keto yêu cầu giảm lượng carbohydrate, thường dưới 50g mỗi ngày. Hạn chế các nguồn carbohydrate&nbsp;<em>(đường, bột mì, ngũ cốc và các sản phẩm từ sữa,…).</em>&nbsp;Thay vào đó, tập trung vào việc tiêu thụ rau xanh giàu chất xơ và ít carbohydrate&nbsp;<em>(rau cải, bông cải xanh, rau muống, rau diếp cá,…).</em></li><li><strong><em>Tăng cường chất béo và protein:</em></strong>&nbsp;Chế độ ăn sáng keto đòi hỏi một lượng chất béo và protein đáng kể. Bạn hãy đảm bảo lựa chọn các nguồn chất béo lành mạnh và nguồn protein chất lượng (<em>thịt, cá, trứng, hạt chia, hạt hướng dương, dầu ô liu, bơ, kem, phô mai, và các loại hạt,…).</em></li><li><strong><em>Theo dõi lượng calo:</em></strong>&nbsp;Mặc dù chế độ ăn sáng keto không hạn chế calo quá chặt chẽ, nhưng bạn vẫn cần chú ý đến lượng calo tiêu thụ. Để đạt được mục tiêu giảm cân, bạn cần duy trì thặng dư calo nhỏ hoặc calo cân đối, tùy thuộc vào mục tiêu cá nhân của mình.</li><li><strong><em>Bổ sung vitamin và khoáng chất:</em></strong>&nbsp;Vì chế độ ăn sáng keto có thể hạn chế một số nguồn dinh dưỡng, đặc biệt là vitamin và khoáng chất. Do đó, bạn hãy đảm bảo bổ sung đầy đủ các loại vitamin và khoáng chất thông qua thực phẩm hoặc thực phẩm bổ sung.</li><li><strong><em>Uống đủ nước:</em></strong>&nbsp;Khi thực hiện chế độ ăn sáng keto, cần duy trì lượng nước đủ mỗi ngày.</li></ul><p>&nbsp;</p><p><img src=\"https://healthyeating.shop/wp-content/uploads/2023/06/bua-sang-keto-2-592x394.jpg\"></p><p>&nbsp;</p><p><strong style=\"color: rgb(255, 102, 0);\">&gt;&gt;&gt; Có thể bạn quan tâm:</strong><strong>&nbsp;</strong><a href=\"https://healthyeating.shop/blog-giam-can/cach-su-dung-que-thu-keto/\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(0, 128, 0);\"><strong>Cách Sử Dụng Que Thử Keto</strong></a><strong>&nbsp;Nhanh Chóng Và Chuẩn Nhất</strong></p><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 128, 0);\">10+&nbsp;<em>Thực đơn keto bữa sáng&nbsp;</em>dành cho những cô nàng bận rộn</strong></h2><p>&nbsp;</p><p>Với chế độ&nbsp;<em>ăn sáng keto</em>, bạn có rất nhiều sự lựa chọn để thưởng thức, chẳng hạn như:</p><ol><li><strong>Trứng chiên với bơ:&nbsp;</strong>Trứng là một nguồn protein chất lượng cao và chứa ít carbohydrate. Khi kết hợp với bơ giàu chất béo, món ăn này cung cấp năng lượng và giúp bạn cảm thấy no lâu hơn.</li><li><strong><em>Bánh mì nướng ngũ cốc:</em></strong>&nbsp;Bánh mì nguyên hạt nướng, ăn kèm kem hạnh nhân và mứt dứa không đường.</li><li><strong>Salad trứng cải:&nbsp;</strong>Salad trứng cải là một món ăn keto bổ dưỡng và ngon miệng. Bạn có thể chế biến nhanh chóng bằng cách trộn trứng luộc, cải xoong và gia vị thích hợp.</li><li><strong>Sữa chua chất béo với hạt chia và quả mọng:&nbsp;</strong>Sữa chua chất béo có hàm lượng carbohydrate thấp và cung cấp protein và chất xơ. Thêm hạt chia và quả mọng tươi mát sẽ tạo ra một bữa sáng ngon lành và bổ dưỡng.</li><li><strong>Bánh&nbsp;mì&nbsp;keto nướng:&nbsp;</strong>Nướng một ổ bánh mì keto từ bột hạt lanh và bột mì hạt lựu. Thoa một lớp dầu dừa hoặc bơ lên bề mặt và ăn kèm với thịt nguội và hành lá.</li><li><strong><em>Smoothie Bowl:</em></strong>&nbsp;Chia hạt ngâm nước dừa hoặc sữa hạnh nhân, kèm topping như hạt hướng dương, hạt lanh, quả mọng và mứt không đường.</li><li><strong><em>Bánh&nbsp;mì&nbsp;nướng bơ chuối:</em></strong>&nbsp;Bánh mì keto từ bột hạt óc chó, bơ, trứng và chuối, nướng giòn và ăn kèm hạt hướng dương và dứa tươi.</li><li><strong><em>Smoothie trái cây</em></strong>: Hỗn hợp nước hoa quả tươi với các loại trái cây như dứa, kiwi, dâu tây và quả mọng.</li><li><strong><em>Bát trái cây tươi:</em></strong>&nbsp;Kết hợp các loại trái cây như dứa, xoài, kiwi, dâu tây, lựu, cam và nho. Thêm một ít hạt chia hoặc hạt hướng dương để tăng cường chất xơ.</li><li><strong><em>Bánh pancake ngũ cốc:</em></strong>&nbsp;Pancake từ bột ngũ cốc không đường, ăn kèm nước mật ong hoặc siro ngọt tự nhiên và trái cây tươi.</li><li><strong><em>Omelette rau:</em></strong>&nbsp;Trứng khuấy với rau xanh như cải xoong, bông cải xanh, hành lá và cà chua. Ướp gia vị nhẹ và nướng chín, ăn kèm với bánh mì đen.</li><li><strong><em>Bát mì sợi chay:</em></strong>&nbsp;Mì sợi chay từ ngũ cốc hoặc đậu, ăn kèm rau xanh, hành lá, hành tây và nước mắm chay.</li><li><strong><em>Cháo yến mạch:</em></strong>&nbsp;Cháo yến mạch với hạt chia, topping hạt hướng dương và quả mọng tráng miệng.</li><li><strong><em>Bánh mì sandwich:</em></strong>&nbsp;Bánh mì sandwich ngũ cốc với thịt gà, rau sống và muối tiêu.</li><li><strong><em>Bún chả cá:</em></strong>&nbsp;Chả cá chiên giòn kèm rau xanh và sốt dầu ô liu.</li><li><strong><em>Hủ tiếu:</em></strong>&nbsp;Bát hủ tiếu gà hoặc bò xay với rau sống và nước dùng từ xương đậm vị.</li></ol><p>&nbsp;</p><p><img src=\"https://healthyeating.shop/wp-content/uploads/2023/06/bua-sang-keto-3-700x394.jpg\"></p><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 128, 0);\">Lời kết</strong></h2><p>&nbsp;</p><p>Thực đơn&nbsp;<strong style=\"color: rgb(0, 128, 0);\">bữa sáng keto</strong>&nbsp;là một lựa chọn tuyệt vời cho những người muốn duy trì chế độ ăn ít carbohydrate và tập trung vào chất béo và protein. Tuy nhiên, khi thực hiện chế độ ăn sáng keto, bạn cần chú ý cân nhắc và điều chỉnh khẩu phần phù hợp với nhu cầu cá nhân. Hi vọng với sự đa dạng và phong phú của thực đơn mà chúng tôi cung cấp, bạn có thể tận hưởng những món ăn ngon miệng và có thể cải thiện sức khỏe và kiểm soát cân nặng của mình nhé.</p><p><br></p>");
-      blog.setImgThumbnail("https://healthyeating.shop/wp-content/uploads/2023/05/thuc-don-eat-clean-cho-me-cho-con-bu-5-700x394.jpg");
-      blogService.save(blog);
-    }
+//    for (int i = 0; i < 10; i++) {
+//      Blog blog = new Blog();
+//      blog.setDescription("Ăn sáng là bước quan trọng trong việc duy trì một lối sống lành mạnh và cân bằng dinh dưỡng. Trong thế giới ẩm thực ngày nay, nền tảng ăn kiêng keto đã thu hút sự quan tâm từ rất nhiều bạn trẻ.");
+//      blog.setTitle("Thử Ngay 10+ Thực Đơn Bữa Sáng Keto Cho Các Cô Nàng Muốn Giảm Cân, Giữ Dáng");
+//      blog.setContent("<p>Ăn sáng là bước quan trọng trong việc duy trì một lối sống lành mạnh và cân bằng dinh dưỡng. Trong thế giới ẩm thực ngày nay, nền tảng ăn kiêng keto đã thu hút sự quan tâm từ rất nhiều bạn trẻ. Với nguồn gốc từ chế độ ăn ít carbohydrate và giàu chất béo,&nbsp;<em>ăn sáng keto&nbsp;</em>đã trở thành một lựa chọn phổ biến cho những người muốn giảm cân và cải thiện sức khỏe. Cùng&nbsp;<a href=\"https://healthyeating.shop/\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(0, 128, 0);\"><strong>Healthy Eating</strong></a>&nbsp;theo dõi bài viết dưới đây để biết thêm nhiều công thức nấu&nbsp;<a href=\"https://healthyeating.shop/blog-giam-can/bua-sang-keto/\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(0, 128, 0);\"><strong>bữa sáng Keto</strong></a>&nbsp;ngon và healthy cho gia đình bạn nhé!</p><p>&nbsp;</p><p class=\"ql-indent-6\"><img src=\"https://healthyeating.shop/wp-content/uploads/2023/06/bua-sang-keto-700x375.jpg\"></p><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 128, 0);\">Một số lợi ích tuyệt vời của bữa sáng Keto mà bạn cần biết</strong></h2><p>&nbsp;</p><p>Ăn sáng keto không chỉ đơn thuần là một chế độ ăn kiêng, mà còn là giúp hỗ trợ cải thiện sức khỏe. Thay vì dựa vào các loại tinh bột như bánh mì, ngũ cốc, hoặc đường, chế độ ăn sáng keto tập trung vào các nguồn protein như trứng, thịt, cá và các nguồn chất béo lành mạnh.</p><p>&nbsp;</p><p>Để hiểu hơn về&nbsp;<a href=\"https://healthyeating.shop/blog-giam-can/che-do-an-keto-la-gi/\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(0, 128, 0);\"><strong>chế độ Keto là gì</strong></a>? Dưới đây là một số lợi ích của&nbsp;<strong><em>ăn sáng theo chế độ keto</em></strong>:</p><p>&nbsp;</p><p><br></p><ul><li><strong><em>Giảm cân:</em></strong>&nbsp;Chế độ ăn sáng keto giúp đốt cháy mỡ thừa và giảm cân một cách hiệu quả.</li><li><strong><em>Kiểm soát đường huyết:</em></strong>&nbsp;<strong><em>Ăn sáng keto</em></strong>&nbsp;giúp kiểm soát mức đường huyết và giảm sự biến động đường huyết.</li><li><strong><em>Tăng cường năng lượng:</em></strong>&nbsp;Chế độ ăn sáng keto tạo ra một nguồn năng lượng ổn định và kéo dài.</li><li><strong><em>Cải thiện tập trung:</em></strong>&nbsp;Việc tiêu thụ chất béo lành mạnh và ít carbohydrate trong bữa sáng keto có thể cải thiện tập trung và sự tinh thần.</li><li><strong><em>Giảm cơn thèm ăn:&nbsp;</em></strong>Ăn sáng keto thường tạo cảm giác no lâu hơn và giảm cơn đói vào buổi trưa.</li><li><strong><em>Cải thiện sức khỏe tim mạch:</em></strong>&nbsp;Chế độ ăn sáng keto có thể giúp giảm triglyceride, tăng hàm lượng cholesterol HDL (cholesterol tốt) và giảm hàm lượng cholesterol LDL (cholesterol xấu).</li></ul><p>&nbsp;</p><p><img src=\"https://healthyeating.shop/wp-content/uploads/2023/06/bua-sang-keto-1-655x394.jpg\"></p><p>&nbsp;</p><p><strong style=\"color: rgb(255, 102, 0);\">&gt;&gt;&gt; Xem thêm:</strong><strong>&nbsp;</strong><a href=\"https://healthyeating.shop/blog-giam-can/thuc-don-keto/\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(0, 128, 0);\"><strong>Thực đơn Keto 28 ngày</strong></a><strong>&nbsp;Giảm Cân Hiệu Quả Nhất</strong></p><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 128, 0);\">Các nguyên tắc cơ bản của bữa sáng Keto</strong></h2><p>&nbsp;</p><p>Để có một&nbsp;<em>bữa sáng keto</em>&nbsp;phù hợp với sức khỏe và thành phần dinh dưỡng, mọi người cần tuân thủ một số nguyên tắc cơ bản:</p><ul><li><strong><em>Giới hạn carbohydrate:</em></strong>&nbsp;Chế độ ăn sáng keto yêu cầu giảm lượng carbohydrate, thường dưới 50g mỗi ngày. Hạn chế các nguồn carbohydrate&nbsp;<em>(đường, bột mì, ngũ cốc và các sản phẩm từ sữa,…).</em>&nbsp;Thay vào đó, tập trung vào việc tiêu thụ rau xanh giàu chất xơ và ít carbohydrate&nbsp;<em>(rau cải, bông cải xanh, rau muống, rau diếp cá,…).</em></li><li><strong><em>Tăng cường chất béo và protein:</em></strong>&nbsp;Chế độ ăn sáng keto đòi hỏi một lượng chất béo và protein đáng kể. Bạn hãy đảm bảo lựa chọn các nguồn chất béo lành mạnh và nguồn protein chất lượng (<em>thịt, cá, trứng, hạt chia, hạt hướng dương, dầu ô liu, bơ, kem, phô mai, và các loại hạt,…).</em></li><li><strong><em>Theo dõi lượng calo:</em></strong>&nbsp;Mặc dù chế độ ăn sáng keto không hạn chế calo quá chặt chẽ, nhưng bạn vẫn cần chú ý đến lượng calo tiêu thụ. Để đạt được mục tiêu giảm cân, bạn cần duy trì thặng dư calo nhỏ hoặc calo cân đối, tùy thuộc vào mục tiêu cá nhân của mình.</li><li><strong><em>Bổ sung vitamin và khoáng chất:</em></strong>&nbsp;Vì chế độ ăn sáng keto có thể hạn chế một số nguồn dinh dưỡng, đặc biệt là vitamin và khoáng chất. Do đó, bạn hãy đảm bảo bổ sung đầy đủ các loại vitamin và khoáng chất thông qua thực phẩm hoặc thực phẩm bổ sung.</li><li><strong><em>Uống đủ nước:</em></strong>&nbsp;Khi thực hiện chế độ ăn sáng keto, cần duy trì lượng nước đủ mỗi ngày.</li></ul><p>&nbsp;</p><p><img src=\"https://healthyeating.shop/wp-content/uploads/2023/06/bua-sang-keto-2-592x394.jpg\"></p><p>&nbsp;</p><p><strong style=\"color: rgb(255, 102, 0);\">&gt;&gt;&gt; Có thể bạn quan tâm:</strong><strong>&nbsp;</strong><a href=\"https://healthyeating.shop/blog-giam-can/cach-su-dung-que-thu-keto/\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(0, 128, 0);\"><strong>Cách Sử Dụng Que Thử Keto</strong></a><strong>&nbsp;Nhanh Chóng Và Chuẩn Nhất</strong></p><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 128, 0);\">10+&nbsp;<em>Thực đơn keto bữa sáng&nbsp;</em>dành cho những cô nàng bận rộn</strong></h2><p>&nbsp;</p><p>Với chế độ&nbsp;<em>ăn sáng keto</em>, bạn có rất nhiều sự lựa chọn để thưởng thức, chẳng hạn như:</p><ol><li><strong>Trứng chiên với bơ:&nbsp;</strong>Trứng là một nguồn protein chất lượng cao và chứa ít carbohydrate. Khi kết hợp với bơ giàu chất béo, món ăn này cung cấp năng lượng và giúp bạn cảm thấy no lâu hơn.</li><li><strong><em>Bánh mì nướng ngũ cốc:</em></strong>&nbsp;Bánh mì nguyên hạt nướng, ăn kèm kem hạnh nhân và mứt dứa không đường.</li><li><strong>Salad trứng cải:&nbsp;</strong>Salad trứng cải là một món ăn keto bổ dưỡng và ngon miệng. Bạn có thể chế biến nhanh chóng bằng cách trộn trứng luộc, cải xoong và gia vị thích hợp.</li><li><strong>Sữa chua chất béo với hạt chia và quả mọng:&nbsp;</strong>Sữa chua chất béo có hàm lượng carbohydrate thấp và cung cấp protein và chất xơ. Thêm hạt chia và quả mọng tươi mát sẽ tạo ra một bữa sáng ngon lành và bổ dưỡng.</li><li><strong>Bánh&nbsp;mì&nbsp;keto nướng:&nbsp;</strong>Nướng một ổ bánh mì keto từ bột hạt lanh và bột mì hạt lựu. Thoa một lớp dầu dừa hoặc bơ lên bề mặt và ăn kèm với thịt nguội và hành lá.</li><li><strong><em>Smoothie Bowl:</em></strong>&nbsp;Chia hạt ngâm nước dừa hoặc sữa hạnh nhân, kèm topping như hạt hướng dương, hạt lanh, quả mọng và mứt không đường.</li><li><strong><em>Bánh&nbsp;mì&nbsp;nướng bơ chuối:</em></strong>&nbsp;Bánh mì keto từ bột hạt óc chó, bơ, trứng và chuối, nướng giòn và ăn kèm hạt hướng dương và dứa tươi.</li><li><strong><em>Smoothie trái cây</em></strong>: Hỗn hợp nước hoa quả tươi với các loại trái cây như dứa, kiwi, dâu tây và quả mọng.</li><li><strong><em>Bát trái cây tươi:</em></strong>&nbsp;Kết hợp các loại trái cây như dứa, xoài, kiwi, dâu tây, lựu, cam và nho. Thêm một ít hạt chia hoặc hạt hướng dương để tăng cường chất xơ.</li><li><strong><em>Bánh pancake ngũ cốc:</em></strong>&nbsp;Pancake từ bột ngũ cốc không đường, ăn kèm nước mật ong hoặc siro ngọt tự nhiên và trái cây tươi.</li><li><strong><em>Omelette rau:</em></strong>&nbsp;Trứng khuấy với rau xanh như cải xoong, bông cải xanh, hành lá và cà chua. Ướp gia vị nhẹ và nướng chín, ăn kèm với bánh mì đen.</li><li><strong><em>Bát mì sợi chay:</em></strong>&nbsp;Mì sợi chay từ ngũ cốc hoặc đậu, ăn kèm rau xanh, hành lá, hành tây và nước mắm chay.</li><li><strong><em>Cháo yến mạch:</em></strong>&nbsp;Cháo yến mạch với hạt chia, topping hạt hướng dương và quả mọng tráng miệng.</li><li><strong><em>Bánh mì sandwich:</em></strong>&nbsp;Bánh mì sandwich ngũ cốc với thịt gà, rau sống và muối tiêu.</li><li><strong><em>Bún chả cá:</em></strong>&nbsp;Chả cá chiên giòn kèm rau xanh và sốt dầu ô liu.</li><li><strong><em>Hủ tiếu:</em></strong>&nbsp;Bát hủ tiếu gà hoặc bò xay với rau sống và nước dùng từ xương đậm vị.</li></ol><p>&nbsp;</p><p><img src=\"https://healthyeating.shop/wp-content/uploads/2023/06/bua-sang-keto-3-700x394.jpg\"></p><p>&nbsp;</p><h2><strong style=\"color: rgb(0, 128, 0);\">Lời kết</strong></h2><p>&nbsp;</p><p>Thực đơn&nbsp;<strong style=\"color: rgb(0, 128, 0);\">bữa sáng keto</strong>&nbsp;là một lựa chọn tuyệt vời cho những người muốn duy trì chế độ ăn ít carbohydrate và tập trung vào chất béo và protein. Tuy nhiên, khi thực hiện chế độ ăn sáng keto, bạn cần chú ý cân nhắc và điều chỉnh khẩu phần phù hợp với nhu cầu cá nhân. Hi vọng với sự đa dạng và phong phú của thực đơn mà chúng tôi cung cấp, bạn có thể tận hưởng những món ăn ngon miệng và có thể cải thiện sức khỏe và kiểm soát cân nặng của mình nhé.</p><p><br></p>");
+//      blog.setImgThumbnail("https://healthyeating.shop/wp-content/uploads/2023/05/thuc-don-eat-clean-cho-me-cho-con-bu-5-700x394.jpg");
+//      blogService.save(blog);
+//    }
 
   }
 
@@ -191,7 +191,7 @@ public class FoodsController {
         return ResponseEntity.ok(new ResponseDTO<String>("Thể loại của ảnh không hợp lệ", "404", "Failed", false));
       }
     }
-
+//
     Product product = new Product();
     product.setName(name);
     product.setPrice(price);
@@ -204,27 +204,27 @@ public class FoodsController {
       product.setCategories(categories);
 
     List<String> imgUrls = new ArrayList<>();
-
+//
     try {
       for (MultipartFile file : files){
         if (!Arrays.asList(typeImg).contains(file.getContentType())) {
           return ResponseEntity.ok(new ResponseDTO<String>("Thể loại của ảnh không hợp lệ", "404", "Failed", false));
         }
-        imgUrls.add(CloudinaryUtils.uploadImg(file.getBytes(), StringUtils.uuidFileName(name)));
+        imgUrls.add(CloudinaryUtils.uploadImg(file.getBytes(), StringUtils.uuidFileName("long")));
       }
       product.setImgs(imgUrls);
-
+      System.out.println(imgUrls);
     } catch (IOException e) {
       return ResponseEntity.ok(new ResponseDTO<String>("Upload ảnh lên không thành công", "404", "Failed", false));
     }
-
-
+//
+//
     foodRepo.save(product);
     return ResponseEntity.ok(new ResponseDTO<>("Tao product thanh cong!", "200", "Success", true));
   }
 
   @PutMapping(value = "/update-product", produces = {MediaType.APPLICATION_JSON_VALUE})
-  public ResponseEntity<ResponseDTO<String>> updateRoom(
+  public ResponseEntity<ResponseDTO<String>> updateProduct(
           @RequestParam(value = "id") Long id,
           @RequestParam("name") String name,
           @RequestParam(value = "price", required = false) Double price,

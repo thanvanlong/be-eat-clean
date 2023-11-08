@@ -68,7 +68,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withIssuer(request.getRequestURI())
                 .sign(algorithm);
 
-        ResponseDTO<String> data = new ResponseDTO<>(access_token, "200", "", true);
+        user.setAccessToken(access_token);
+        ResponseDTO<User> data = new ResponseDTO<>(user, "200", "", true);
         Cookie cookie = new Cookie("refresh_token", refresh_token);
         cookie.setHttpOnly(true);
         cookie.setPath("/");

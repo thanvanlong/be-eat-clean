@@ -49,10 +49,13 @@ public class UserController {
 
 
 
-    @PostConstruct
+//    @PostConstruct
     public void init() throws Exception {
+        List<Role> roles = new ArrayList<>();
+        roles.add(Role.ROLE_ADMIN);
         User user = new User();
         user.setPassword("123123");
+        user.setRoles(roles);
         user.setEmail("longthan@gmail.com");
 
         userService.save(user);

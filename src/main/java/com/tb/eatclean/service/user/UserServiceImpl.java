@@ -61,7 +61,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByEmail(String email) {
-        return userRepo.findUserByEmail(email).get();
+        Optional<User> userOptional = userRepo.findUserByEmail(email);
+        return userOptional.isPresent() ? userOptional.get() : null;
     }
 
     @Override

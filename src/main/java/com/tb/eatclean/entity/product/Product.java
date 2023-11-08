@@ -26,6 +26,7 @@ public class Product {
     private Long id;
     private String name;
     private double price;
+    @Column(columnDefinition="text", length=10485760)
     private String description;
     private int quantity;
     @Column(name = "imgs")
@@ -62,6 +63,9 @@ public class Product {
         this.searchName = StringUtils.removeAccents(this.name).toLowerCase();
     }
 
+    public void setCategory(Set<Categorie> categories) {
+        this.categories = categories;
+    }
 
     public void setCategories(Set<Long> categoryIds) {
         this.categories = categoryIds.stream().map(id -> {

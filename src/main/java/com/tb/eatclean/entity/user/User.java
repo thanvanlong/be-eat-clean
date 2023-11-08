@@ -39,10 +39,9 @@ public class User implements UserDetails {
     private Boolean isActive;
     @Enumerated
     private Collection<Role> roles = new ArrayList<>();
-    @CreationTimestamp
-    private LocalDateTime createAt;
-    @UpdateTimestamp
-    private LocalDateTime updateAt;
+
+    @Transient
+    private String accessToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

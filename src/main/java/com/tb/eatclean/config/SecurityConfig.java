@@ -88,7 +88,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(
-                List.of("http://192.168.1.8:5173", "http://localhost:5173", "https://webhook.site"));
+                List.of("http://192.168.1.18:3000", "http://localhost:5173", "http://localhost:3000", "https://webhook.site"));
         configuration.setAllowedMethods(List.of("HEAD",
                 "GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowCredentials(true);
