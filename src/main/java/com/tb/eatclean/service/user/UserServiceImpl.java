@@ -1,18 +1,26 @@
 package com.tb.eatclean.service.user;
 
 import com.tb.eatclean.config.PassEncoder;
+import com.tb.eatclean.entity.Metadata;
+import com.tb.eatclean.entity.promotion.Promotion;
 import com.tb.eatclean.entity.user.User;
 import com.tb.eatclean.repo.UserRepo;
 import jakarta.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -52,6 +60,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(User user) {
 
+    }
+
+    @Override
+    public Map<String, Object> search(int page, int limit, String search) {
+        Pageable pagingSort = PageRequest.of(page, limit);
+        Page<User> userPage = userRepo.findByNameContaining(search ,pagingSort);
+
+        Metadata metadata = new Metadata();
+        metadata.setPageNumber(userPage.getNumber());
+        metadata.setPageSize(userPage.getSize());
+        metadata.setTotalPages(userPage.getTotalPages());
+        metadata.setTotalItems(userPage.getTotalElements());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("results", userPage.getContent().stream().filter(it -> it.getId() != 1));
+        response.put("metadata", metadata);
+
+        return response;
     }
 
     @Override

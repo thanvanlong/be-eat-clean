@@ -82,6 +82,16 @@ public class UserController {
         return ResponseEntity.ok(new ResponseDTO<>(null, "200", "Success", true));
     }
 
+    @PreAuthorize("permitAll()")
+    @GetMapping("/list")
+    public ResponseEntity<ResponseDTO<Map<String, Object>>> listUser(@RequestParam(defaultValue = "0") int page,
+                                                                          @RequestParam(defaultValue = "10") int limit,
+                                                                          @RequestParam(required = false, defaultValue = "") String search) {
+
+        Map<String, Object> userPage = userService.search(page, limit, search);
+        return ResponseEntity.ok(new ResponseDTO<>(userPage, "200", "Success", true));
+    }
+
     @PutMapping("update/{id}")
     public ResponseEntity<ResponseDTO<String>> update(@PathVariable("id") Long id, @RequestBody User payload) {
         try {
