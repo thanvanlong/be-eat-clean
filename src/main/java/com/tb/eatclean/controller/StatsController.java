@@ -6,6 +6,7 @@ import com.tb.eatclean.repo.BillRepo;
 import com.tb.eatclean.repo.CategoryRepo;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.*;
 
+@Data
 @AllArgsConstructor
 class StatsCategory {
     String label;
     long revenue;
 }
 
+@Data
 @AllArgsConstructor
 class StatsCategoryWeek {
     String label;
@@ -26,6 +29,7 @@ class StatsCategoryWeek {
     LocalDate date;
 }
 
+@Data
 @AllArgsConstructor
 class ResponseExcel {
     String username;
@@ -33,8 +37,15 @@ class ResponseExcel {
     long foodId;
     String category;
     int quantity;
-
 }
+
+@Data
+@AllArgsConstructor
+class StatsRevenueWeek {
+    long revenue;
+    LocalDate date;
+}
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/v1/stats")
@@ -96,7 +107,7 @@ public class StatsController {
 
         LocalDate currentDate = LocalDate.now();
         List<LocalDate> dateList = new ArrayList<>();
-        for (int i = 1; i<= 7; i++) {
+        for (int i = 0; i< 7; i++) {
             dateList.add(currentDate.minusDays(i));
         }
 
@@ -123,20 +134,46 @@ public class StatsController {
         return ResponseEntity.ok(new ResponseDTO<>(statsCategories, "200", "Success", true));
     }
 
+    @GetMapping("revenue/week")
+    public ResponseEntity<ResponseDTO<List<StatsRevenueWeek>>> revenueWeek (){
+        List<StatsRevenueWeek> statsRevenue = new ArrayList<>();
+
+        LocalDate currentDate = LocalDate.now();
+        List<LocalDate> dateList = new ArrayList<>();
+        for (int i = 0; i< 7; i++) {
+            dateList.add(currentDate.minusDays(i));
+        }
+
+        for (LocalDate date: dateList) {
+            int day = date.getDayOfMonth();
+            int month = date.getMonthValue();
+            int year = date.getYear();
+
+            long revenue = 0;
+
+            Long stats = this.billRepo.statsRevenue(year, month, day);
+
+            if(stats != null) revenue = stats;
+           statsRevenue.add(new StatsRevenueWeek(revenue, date));
+        }
+
+        return ResponseEntity.ok(new ResponseDTO<>(statsRevenue, "200", "Success", true));
+    }
+
     @PostConstruct
     void test (){
-        LocalDate currentDate = LocalDate.now();
-        System.out.println(currentDate.getMonthValue());
-        List<Object[]> objects = this.billRepo.statsEveryDay(currentDate.getYear());
-
-        for(Object[] objects1: objects){
-            System.out.println(objects1[0]); // name;
-            System.out.println(objects1[1]); // category
-            System.out.println(objects1[2]); // id
-            System.out.println(objects1[3]); // name foods
-            System.out.println(objects1[4]); // gia
-            System.out.println(objects1[5]); // so luong
-        }
+//        LocalDate currentDate = LocalDate.now();
+//        System.out.println(currentDate.getMonthValue());
+//        List<Object[]> objects = this.billRepo.statsEveryDay(currentDate.getYear());
+//
+//        for(Object[] objects1: objects){
+//            System.out.println(objects1[0]); // name;
+//            System.out.println(objects1[1]); // category
+//            System.out.println(objects1[2]); // id
+//            System.out.println(objects1[3]); // name foods
+//            System.out.println(objects1[4]); // gia
+//            System.out.println(objects1[5]); // so luong
+//        }
     }
 
 

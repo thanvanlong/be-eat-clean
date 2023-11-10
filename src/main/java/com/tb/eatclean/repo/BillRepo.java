@@ -13,18 +13,24 @@ public interface BillRepo extends JpaRepository<Bill, Long> {
   List<Bill> findByUser(User user);
   List<Bill> findAllByUserId(Long userId);
 
-  @Query("SELECT MONTH(b.createAt), SUM(b.price) " +
+  @Query("SELECT MONTH(b.updateAt), SUM(b.price) " +
           "FROM Bill b " +
-          "where b.billStatus = 1 AND YEAR(b.createAt) = :year "+
-          "GROUP BY MONTH(b.createAt)")
+          "where b.billStatus = 1 AND YEAR(b.updateAt) = :year "+
+          "GROUP BY MONTH(b.updateAt)")
   List<Object[]> statsRevenue(int year);
+
+  @Query("SELECT SUM(b.price) " +
+          "FROM Bill b " +
+          "where b.billStatus = 1 AND YEAR(b.updateAt) = :year AND MONTH(b.updateAt) = :month AND DAY(b.updateAt) = :day "+
+          "GROUP BY YEAR(b.updateAt), MONTH(b.updateAt), DAY(b.updateAt)")
+  Long statsRevenue(int year, int month, int day);
 
   @Query("SELECT ca.id, SUM(b.price) " +
           "FROM Bill b " +
           "INNER JOIN b.carts c "+
           "INNER JOIN c.foods f "+
           "INNER JOIN f.categories ca "+
-          "where b.billStatus = 1 AND YEAR(b.createAt) = :year " +
+          "where b.billStatus = 1 AND YEAR(b.updateAt) = :year " +
           "GROUP BY ca.id")
   List<Object[]> statsCategory (int year);
 
@@ -33,7 +39,7 @@ public interface BillRepo extends JpaRepository<Bill, Long> {
           "INNER JOIN b.carts c "+
           "INNER JOIN c.foods f "+
           "INNER JOIN f.categories ca "+
-          "where b.billStatus = 1 AND YEAR(b.createAt) = :year AND MONTH(b.createAt) = :month AND DAY(b.createAt) = :day " +
+          "where b.billStatus = 1 AND YEAR(b.updateAt) = :year AND MONTH(b.updateAt) = :month AND DAY(b.updateAt) = :day " +
           "GROUP BY ca.id")
   List<Object[]> statsCategory (int year, int month, int day);
 
@@ -42,7 +48,7 @@ public interface BillRepo extends JpaRepository<Bill, Long> {
           "INNER JOIN b.carts c "+
           "INNER JOIN c.foods f "+
           "INNER JOIN f.categories ca "+
-          "where b.billStatus = 1 AND YEAR(b.createAt) = :year ")
+          "where b.billStatus = 1 AND YEAR(b.updateAt) = :year ")
   List<Object[]> statsEveryDay(int year);
 
 }
