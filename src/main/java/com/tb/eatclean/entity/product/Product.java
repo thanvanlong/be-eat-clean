@@ -25,7 +25,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private double price;
+    private long price;
     @Column(columnDefinition="text", length=10485760)
     private String description;
     private int quantity;
@@ -63,9 +63,9 @@ public class Product {
         this.searchName = StringUtils.removeAccents(this.name).toLowerCase();
     }
 
-    public void setCategory(Set<Categorie> categories) {
-        this.categories = categories;
-    }
+//    public void setCategories(Set<Categorie> categories) {
+//        this.categories = categories;
+//    }
 
     public void setCategories(Set<Long> categoryIds) {
         this.categories = categoryIds.stream().map(id -> {

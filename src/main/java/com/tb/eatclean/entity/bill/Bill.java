@@ -22,7 +22,6 @@ import java.util.Map;
 @Table(name = "bill")
 public class Bill  {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   @ManyToOne
   private User user;
@@ -42,6 +41,6 @@ public class Bill  {
   private String phone;
   private String note;
   private long price;
-  @ManyToOne
+  @Transient
   private Promotion promotion;
 }

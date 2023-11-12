@@ -49,13 +49,13 @@ public class UserController {
 
 
 
-//    @PostConstruct
+    @PostConstruct
     public void init() throws Exception {
         List<Role> roles = new ArrayList<>();
         roles.add(Role.ROLE_ADMIN);
         User user = new User();
         user.setPassword("123123");
-        user.setRoles(roles);
+//        user.setRoles(roles);
         user.setEmail("longthan@gmail.com");
 
         userService.save(user);
@@ -92,11 +92,21 @@ public class UserController {
         return ResponseEntity.ok(new ResponseDTO<>(userPage, "200", "Success", true));
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<ResponseDTO<String>> update(@PathVariable("id") Long id, @RequestBody User payload) {
+
+    @DeleteMapping("/{email}")
+    public ResponseEntity<ResponseDTO<?>> deleteOne(@PathVariable("email") String email) {
+        User user = userService.findByEmail(email);
+        if (user == null) {
+            return ResponseEntity.ok(new ResponseDTO<>("Nguoi dung khong ton tai", "400", "Fail", false));
+        }
+        userService.delete(user);
+
+        return ResponseEntity.ok(new ResponseDTO<>("delete thanh cong", "200", "Success", true));
+    }
+    @PutMapping("update")
+    public ResponseEntity<ResponseDTO<String>> update(@RequestBody User payload) {
         try {
-            payload.setId(id);
-            userService.save(payload);
+            userService.update(payload);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDTO<>(null, "400", e.getMessage(), false));
         }

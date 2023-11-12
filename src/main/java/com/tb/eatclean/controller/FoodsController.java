@@ -95,7 +95,9 @@ public class FoodsController {
     for (int i = 0; i < 20; i++) {
       Product product = new Product();
       product.setName("Thuc an loai mot " + i);
-      product.setCategory(new HashSet<>(categoriesService.getAllCategories()));
+      Set<Long> longs = new HashSet<>();
+      longs.add(1L);
+      product.setCategories(longs);
       product.setQuantity(100);
       product.setPrice(100000);
       product.setDescription("sdfghjkldfghjkl;");
@@ -176,7 +178,7 @@ public class FoodsController {
 
   @PostMapping(value = "/create-product",  produces = {MediaType.APPLICATION_JSON_VALUE})
   public ResponseEntity<ResponseDTO<String>> createProduct(@RequestParam("name") String name,
-                                                      @RequestParam(value = "price", defaultValue = "10000") double price,
+                                                      @RequestParam(value = "price", defaultValue = "10000") long price,
                                                       @RequestParam(value = "quantity", defaultValue = "10") int quantity,
                                                       @RequestParam(value = "slug", defaultValue = "") String slug,
                                                       @RequestParam(value = "shortDescription", defaultValue = "") String shortDescription,
@@ -227,7 +229,7 @@ public class FoodsController {
   public ResponseEntity<ResponseDTO<String>> updateProduct(
           @RequestParam(value = "id") Long id,
           @RequestParam("name") String name,
-          @RequestParam(value = "price", required = false) Double price,
+          @RequestParam(value = "price", required = false) Long price,
           @RequestParam(value = "quantity", required = false) Integer quantity,
           @RequestParam(value = "slug", required = false) String slug,
           @RequestParam(value = "shortDescription", required = false) String shortDescription,
@@ -414,9 +416,10 @@ public class FoodsController {
 
       bill.setBillStatus(BillStatus.PENDING);
       bill.setUser(user);
+      bill.setId(System.currentTimeMillis());
       Promotion promotion = bill.getPromotion();
       try {
-        if (promotion != null) {
+        if (promotion != null && promotion.getCode() != null) {
           promotion.setQuantity(promotion.getQuantity() - 1);
           promotionService.save(promotion);
         }
@@ -431,7 +434,7 @@ public class FoodsController {
       String orderId = b.getId() + "";
       long amount = bill.getPrice();
       String orderInfo = "Pay With MoMo";
-      String returnURL = "http://localhost:5173/";
+      String returnURL = "http://localhost:5173";
       String notifyURL = "https://webhook.site/1307aba7-41e6-403f-8739-31a91303a549";
 
       Environment environment = Environment.selectEnv("dev");

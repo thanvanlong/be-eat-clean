@@ -3,6 +3,7 @@ package com.tb.eatclean.service.user;
 import com.tb.eatclean.config.PassEncoder;
 import com.tb.eatclean.entity.Metadata;
 import com.tb.eatclean.entity.promotion.Promotion;
+import com.tb.eatclean.entity.user.Role;
 import com.tb.eatclean.entity.user.User;
 import com.tb.eatclean.repo.UserRepo;
 import jakarta.transaction.Transactional;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     public void save(User user) throws Exception{
         if (userRepo.findUserByEmail(user.getEmail()).isPresent()) {
-            throw new Exception("Account has already exist");
+//            throw new Exception("Account has already exist");
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepo.save(user);
@@ -47,8 +48,8 @@ public class UserServiceImpl implements UserService {
         userRepo.findUserByEmail(user.getEmail())
                 .ifPresentOrElse(
                         (it) -> {
-                            user.setPassword(passwordEncoder.encode(user.getPassword()));
                             it.mapping(user);
+                            it.setPassword(passwordEncoder.encode(user.getPassword()));
                             userRepo.save(it);
                         },
                         () -> {
@@ -59,13 +60,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(User user) {
-
+        userRepo.delete(user);
     }
 
     @Override
     public Map<String, Object> search(int page, int limit, String search) {
         Pageable pagingSort = PageRequest.of(page, limit);
-        Page<User> userPage = userRepo.findByNameContaining(search ,pagingSort);
+        Page<User> userPage = userRepo.findAll(pagingSort);
 
         Metadata metadata = new Metadata();
         metadata.setPageNumber(userPage.getNumber());
@@ -74,7 +75,7 @@ public class UserServiceImpl implements UserService {
         metadata.setTotalItems(userPage.getTotalElements());
 
         Map<String, Object> response = new HashMap<>();
-        response.put("results", userPage.getContent().stream().filter(it -> it.getId() != 1));
+        response.put("results", userPage.getContent().stream().filter(it -> !it.getRoles().contains(Role.ROLE_ADMIN)));
         response.put("metadata", metadata);
 
         return response;

@@ -25,6 +25,7 @@ public class Promotion {
     private String code;
     private double discount;
     private int quantity;
+    private String description;
     @CreationTimestamp
     private LocalDateTime createAt;
     @UpdateTimestamp

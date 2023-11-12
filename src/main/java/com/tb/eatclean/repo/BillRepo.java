@@ -1,11 +1,14 @@
 package com.tb.eatclean.repo;
 
 import com.tb.eatclean.entity.bill.Bill;
+import com.tb.eatclean.entity.bill.BillStatus;
 import com.tb.eatclean.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -25,7 +28,7 @@ public interface BillRepo extends JpaRepository<Bill, Long> {
           "GROUP BY YEAR(b.updateAt), MONTH(b.updateAt), DAY(b.updateAt)")
   Long statsRevenue(int year, int month, int day);
 
-  @Query("SELECT ca.id, SUM(b.price) " +
+  @Query("SELECT distinct ca.id, SUM(f.price * c.quantity) " +
           "FROM Bill b " +
           "INNER JOIN b.carts c "+
           "INNER JOIN c.foods f "+
@@ -34,7 +37,7 @@ public interface BillRepo extends JpaRepository<Bill, Long> {
           "GROUP BY ca.id")
   List<Object[]> statsCategory (int year);
 
-  @Query("SELECT ca.id, SUM(b.price) " +
+  @Query("SELECT distinct ca.id, SUM(b.price), b " +
           "FROM Bill b " +
           "INNER JOIN b.carts c "+
           "INNER JOIN c.foods f "+
@@ -50,5 +53,7 @@ public interface BillRepo extends JpaRepository<Bill, Long> {
           "INNER JOIN f.categories ca "+
           "where b.billStatus = 1 AND YEAR(b.updateAt) = :year ")
   List<Object[]> statsEveryDay(int year);
+
+  List<Bill> findByBillStatusAndUpdateAtIsBetween(BillStatus billStatus, LocalDateTime startAt, LocalDateTime endAt);
 
 }

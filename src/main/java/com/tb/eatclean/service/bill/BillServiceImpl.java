@@ -1,13 +1,20 @@
 package com.tb.eatclean.service.bill;
 
+import com.tb.eatclean.entity.Metadata;
 import com.tb.eatclean.entity.bill.Bill;
+import com.tb.eatclean.entity.product.Product;
 import com.tb.eatclean.entity.user.User;
 import com.tb.eatclean.repo.BillRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BillServiceImpl implements BillService {
@@ -28,5 +35,23 @@ public class BillServiceImpl implements BillService {
     @Override
     public List<Bill> getBillByUser(User user) {
         return billRepo.findByUser(user);
+    }
+
+    @Override
+    public Map<String, Object> getBills() {
+        Pageable pagingSort = PageRequest.of(0, 100);
+        Page<Bill> foodsPage = billRepo.findAll(pagingSort);
+
+        Metadata metadata = new Metadata();
+        metadata.setPageNumber(foodsPage.getNumber());
+        metadata.setPageSize(foodsPage.getSize());
+        metadata.setTotalPages(foodsPage.getTotalPages());
+        metadata.setTotalItems(foodsPage.getTotalElements());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("results", foodsPage.getContent());
+        response.put("metadata", metadata);
+
+        return response;
     }
 }
