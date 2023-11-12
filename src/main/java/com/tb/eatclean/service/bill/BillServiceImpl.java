@@ -33,8 +33,20 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public List<Bill> getBillByUser(User user) {
-        return billRepo.findByUser(user);
+    public Map<String, Object> getBillByUser(String email, Pageable pageable) {
+        Page<Bill> foodsPage = billRepo.findByUserEmail(email, pageable);
+
+        Metadata metadata = new Metadata();
+        metadata.setPageNumber(foodsPage.getNumber());
+        metadata.setPageSize(foodsPage.getSize());
+        metadata.setTotalPages(foodsPage.getTotalPages());
+        metadata.setTotalItems(foodsPage.getTotalElements());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("results", foodsPage.getContent());
+        response.put("metadata", metadata);
+
+        return response;
     }
 
     @Override

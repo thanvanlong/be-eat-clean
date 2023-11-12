@@ -46,6 +46,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -83,6 +84,8 @@ public class FoodsController {
   private CommentService commentService;
   @Autowired
   private BlogService blogService;
+
+  // create-running-destroy
 
 //  @PostConstruct
   public void init() {
@@ -291,7 +294,10 @@ public class FoodsController {
     if (principal instanceof String && !((String) principal).isEmpty()) {
       user = userService.findByEmail((String) principal);
       if (user != null) {
-        List<Bill> bills = billService.getBillByUser(user);
+        List<Bill> bills = (List<Bill>) billService.getBillByUser(user.getEmail(), PageRequest.of(0, 50)).get("results");
+        if (bills == null) {
+          bills = new ArrayList<>();
+        }
         for (Bill bill :
                 bills) {
           if (bill.getBillStatus() == BillStatus.COMPLETED) {

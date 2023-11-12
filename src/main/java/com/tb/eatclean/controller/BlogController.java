@@ -37,7 +37,7 @@ public class BlogController {
         blog.setDescription(description);
         blog.setTitle(title);
         blog.setContent(content);
-        blog.setImgThumbnail(CloudinaryUtils.uploadImg(file.getBytes(), StringUtils.uuidFileName(title)));
+        blog.setImgThumbnail(CloudinaryUtils.uploadImg(file.getBytes(), StringUtils.uuidFileName(System.currentTimeMillis() + "")));
         blog.setBlogState(BlogState.Active);
 
         blogService.save(blog);
