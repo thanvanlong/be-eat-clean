@@ -353,7 +353,7 @@ public class FoodsController {
         cartService.save(cart);
         return ResponseEntity.ok(new ResponseDTO<>(true, "200", "Success", true));
       } else {
-        cart.setQuantity(food.getOrderCount());
+        cart.setQuantity(food.getOrderCount() + cart.getQuantity());
         cartService.save(cart);
         return ResponseEntity.ok(new ResponseDTO<>(false, "200", "Success", true));
       }
@@ -393,7 +393,7 @@ public class FoodsController {
       int totalOrder = cartService.countCartByUser(user);
       return ResponseEntity.ok(new ResponseDTO<>(totalOrder, "200", "Success", true));
     } else {
-      return ResponseEntity.ok(new ResponseDTO<>("Vui long dang nhap", "400", "Fail", false));
+      return ResponseEntity.ok(new ResponseDTO<>(0, "400", "Fail", true));
     }
   }
 
