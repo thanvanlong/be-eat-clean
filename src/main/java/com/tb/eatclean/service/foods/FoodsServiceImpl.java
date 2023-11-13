@@ -30,7 +30,7 @@ public class FoodsServiceImpl implements FoodsService {
     @Override
     public Map<String, Object> pagingSort(int page, int limit) {
         Pageable pagingSort = PageRequest.of(page, limit);
-        Page<Product> foodsPage = foodsRepo.findAll(pagingSort);
+        Page<Product> foodsPage = foodsRepo.findAllByDeleteFalse(pagingSort);
 
         Metadata metadata = new Metadata();
         metadata.setPageNumber(foodsPage.getNumber());
