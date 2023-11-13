@@ -95,7 +95,7 @@ public class FoodsController {
 
     categoriesService.save(categorie);
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 1; i++) {
       Product product = new Product();
       product.setName("Thuc an loai mot " + i);
       Set<Long> longs = new HashSet<>();
@@ -413,7 +413,14 @@ public class FoodsController {
               carts) {
         if (cart != null) {
           cart.setStatus(Status.DONE);
-          cartService.save(cart);
+          try {
+            if (cart.getId() < 0) {
+              cart.setId(System.currentTimeMillis());
+            }
+            cartService.save(cart);
+          } catch (Exception e) {
+
+          }
           Product product = cart.getFoods();
           product.setQuantity(product.getQuantity() - cart.getQuantity());
           foodsService.save(product);

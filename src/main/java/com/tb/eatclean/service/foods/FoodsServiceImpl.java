@@ -30,7 +30,7 @@ public class FoodsServiceImpl implements FoodsService {
     @Override
     public Map<String, Object> pagingSort(int page, int limit) {
         Pageable pagingSort = PageRequest.of(page, limit);
-        Page<Product> foodsPage = foodsRepo.findAllByDeleteFalse(pagingSort);
+        Page<Product> foodsPage = foodsRepo.findByState(false, pagingSort);
 
         Metadata metadata = new Metadata();
         metadata.setPageNumber(foodsPage.getNumber());
@@ -68,14 +68,14 @@ public class FoodsServiceImpl implements FoodsService {
     public Product get(Long id) throws Exception{
         Optional<Product> foods = foodsRepo.findById(id);
 
-        if(foods.isPresent() && !foods.get().isDelete()) return foods.get();
+        if(foods.isPresent() && !foods.get().isState()) return foods.get();
         throw new Exception("Khong co san pham nay");
     }
 
     @Override
     public Product getFoodsById(Long id) throws Exception{
         Optional<Product> foods = foodsRepo.findById(id);
-        if(foods.isPresent() && !foods.get().isDelete()) {
+        if(foods.isPresent() && !foods.get().isState()) {
             Product product = foods.get();
 
             return foods.get();
@@ -100,7 +100,7 @@ public class FoodsServiceImpl implements FoodsService {
     @Override
     public String remove(Long id) throws Exception{
         Product product = get(id);
-        product.setDelete(true);
+        product.setState(true);
         this.foodsRepo.save(product);
         return "Da xoa thanh cong";
     }

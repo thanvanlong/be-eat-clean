@@ -66,15 +66,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<ResponseDTO<User>> register(@Valid @RequestBody User payload) {
         try {
-            Collection<Role> roles = new ArrayList<>();
-            roles.add(Role.ROLE_ADMIN);
-            payload.setRoles(roles);
             userService.save(payload);
-            String uuidToken = UUID.randomUUID().toString().replace("-", "");
-            System.out.println(uuidToken);
-//            redisTemplate.opsForValue().set(uuidToken, payload.getEmail());
-//            redisTemplate.expireAt(uuidToken, Instant.now().plusSeconds(300));
-            mailService.send(payload.getEmail(), activeUrl + uuidToken, "active");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDTO<>(null, "400", e.getMessage(), false));
         }

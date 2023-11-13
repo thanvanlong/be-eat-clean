@@ -12,8 +12,8 @@ public interface FoodRepo extends JpaRepository<Product, Long> {
     Page<Product> findAllByNameContaining(String search, Pageable pageable);
 
     @Query("SELECT b  FROM Product b" +
-            " LEFT JOIN FETCH b.categories c WHERE c.label LIKE %:label% AND b.name LIKE %:name% AND b.isDelete = false ")
+            " LEFT JOIN FETCH b.categories c WHERE c.label LIKE %:label% AND b.name LIKE %:name% AND b.state = false ")
     Page<Product> findByName(@Param("name") String name, @Param("label") String label, Pageable pageable);
 
-    Page<Product> findAllByDeleteFalse(Pageable pageable);
+    Page<Product> findByState(boolean isDelete, Pageable pageable);
 }
