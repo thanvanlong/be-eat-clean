@@ -526,4 +526,9 @@ public class FoodsController {
     return ResponseEntity.ok(new ResponseDTO<>(true, "", "", true));
   }
 
+  @DeleteMapping("/delete-product")
+  public ResponseEntity<ResponseDTO<?>> deleteProduct(@RequestParam long id) throws Exception{
+    return ResponseEntity.ok(new ResponseDTO<>(this.foodsService.remove(id), "200", "Success", true));
+  }
+
 }

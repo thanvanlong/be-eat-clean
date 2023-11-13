@@ -43,6 +43,7 @@ public class Product {
     @OneToMany
     private List<Comment> comments;
     private String searchName;
+    private boolean isDelete = false;
 
     @Transient
     private boolean canComment;

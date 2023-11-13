@@ -68,14 +68,14 @@ public class FoodsServiceImpl implements FoodsService {
     public Product get(Long id) throws Exception{
         Optional<Product> foods = foodsRepo.findById(id);
 
-        if(foods.isPresent()) return foods.get();
+        if(foods.isPresent() && !foods.get().isDelete()) return foods.get();
         throw new Exception("Khong co san pham nay");
     }
 
     @Override
     public Product getFoodsById(Long id) throws Exception{
         Optional<Product> foods = foodsRepo.findById(id);
-        if(foods.isPresent()) {
+        if(foods.isPresent() && !foods.get().isDelete()) {
             Product product = foods.get();
 
             return foods.get();
@@ -100,7 +100,8 @@ public class FoodsServiceImpl implements FoodsService {
     @Override
     public String remove(Long id) throws Exception{
         Product product = get(id);
-        this.foodsRepo.delete(product);
+        product.setDelete(true);
+        this.foodsRepo.save(product);
         return "Da xoa thanh cong";
     }
 
