@@ -39,7 +39,7 @@ public interface BillRepo extends JpaRepository<Bill, Long> {
           "GROUP BY ca.id")
   List<Object[]> statsCategory (int year);
 
-  @Query("SELECT distinct ca.id, SUM(b.price), b " +
+  @Query("SELECT distinct ca.id, SUM(f.price * c.quantity - (f.price * c.quantity * b.discount / 100)), b " +
           "FROM Bill b " +
           "INNER JOIN b.carts c "+
           "INNER JOIN c.foods f "+

@@ -105,7 +105,7 @@ public class StatsController {
 
             for (Object[] c: list) {
                 if(c[0] == category[0]) {
-                    statsCategory.setRevenue(Long.parseLong(c[1].toString()));
+                    statsCategory.setRevenue((long) Double.parseDouble(c[1].toString()));
                 }
             }
 

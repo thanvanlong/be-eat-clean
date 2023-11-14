@@ -14,6 +14,7 @@ import com.mservice.shared.utils.LogUtils;
 import com.tb.eatclean.dto.PaymentDto;
 import com.tb.eatclean.entity.bill.Bill;
 import com.tb.eatclean.entity.bill.BillStatus;
+import com.tb.eatclean.entity.bill.MethodType;
 import com.tb.eatclean.entity.blog.Blog;
 import com.tb.eatclean.entity.carts.Cart;
 import com.tb.eatclean.entity.carts.Status;
@@ -87,7 +88,7 @@ public class FoodsController {
 
   // create-running-destroy
 
-//  @PostConstruct
+  @PostConstruct
   public void init() {
     Categorie categorie = new Categorie();
     categorie.setLabel("Loai mot nhe");
@@ -95,9 +96,9 @@ public class FoodsController {
 
     categoriesService.save(categorie);
 
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 4; i++) {
       Product product = new Product();
-      product.setName("Thuc an loai mot " + i);
+      product.setName("Thuc an loai mot " + i + 1);
       Set<Long> longs = new HashSet<>();
       longs.add(1L);
       product.setCategories(longs);
@@ -442,23 +443,25 @@ public class FoodsController {
       }
       Bill b = billService.save(bill);
 
+      if (bill.getMethodType() == MethodType.MOMO) {
+        LogUtils.init();
+        String requestId = String.valueOf(System.currentTimeMillis());
+        String orderId = b.getId() + "";
+        long amount = bill.getPrice();
+        String orderInfo = "Pay With MoMo";
+        String returnURL = "http://localhost:5173";
+        String notifyURL = "https://webhook.site/1307aba7-41e6-403f-8739-31a91303a549";
 
-      LogUtils.init();
-      String requestId = String.valueOf(System.currentTimeMillis());
-      String orderId = b.getId() + "";
-      long amount = bill.getPrice();
-      String orderInfo = "Pay With MoMo";
-      String returnURL = "http://localhost:5173";
-      String notifyURL = "https://webhook.site/1307aba7-41e6-403f-8739-31a91303a549";
-
-      Environment environment = Environment.selectEnv("dev");
-      try {
-        PaymentResponse captureWalletMoMoResponse = CreateOrderMoMo.process(environment, orderId, requestId, Long.toString(amount), orderInfo, returnURL, notifyURL, "", RequestType.CAPTURE_WALLET, Boolean.TRUE);
-        return ResponseEntity.ok(new ResponseDTO<>(captureWalletMoMoResponse.getPayUrl(), "200", "Success", true));
-      } catch (Exception e) {
-        return ResponseEntity.ok(new ResponseDTO<>("Thanh toan that bai", "400", "Fail", false));
+        Environment environment = Environment.selectEnv("dev");
+        try {
+          PaymentResponse captureWalletMoMoResponse = CreateOrderMoMo.process(environment, orderId, requestId, Long.toString(amount), orderInfo, returnURL, notifyURL, "", RequestType.CAPTURE_WALLET, Boolean.TRUE);
+          return ResponseEntity.ok(new ResponseDTO<>(captureWalletMoMoResponse.getPayUrl(), "200", "Success", true));
+        } catch (Exception e) {
+          return ResponseEntity.ok(new ResponseDTO<>("Thanh toan that bai", "400", "Fail", false));
+        }
+      } else {
+        return ResponseEntity.ok(new ResponseDTO<>("Thanh toán thành công", "200", "Success", true));
       }
-
     }
 
     return null;
