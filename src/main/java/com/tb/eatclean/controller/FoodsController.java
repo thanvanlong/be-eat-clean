@@ -435,6 +435,7 @@ public class FoodsController {
         if (promotion != null && promotion.getCode() != null) {
           promotion.setQuantity(promotion.getQuantity() - 1);
           promotionService.save(promotion);
+          bill.setDiscount(promotion.getDiscount());
         }
       } catch (Exception e) {
 

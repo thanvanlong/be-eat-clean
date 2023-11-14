@@ -30,7 +30,7 @@ public interface BillRepo extends JpaRepository<Bill, Long> {
           "GROUP BY YEAR(b.updateAt), MONTH(b.updateAt), DAY(b.updateAt)")
   Long statsRevenue(int year, int month, int day);
 
-  @Query("SELECT distinct ca.id, SUM(f.price * c.quantity) " +
+  @Query("SELECT distinct ca.id, SUM(f.price * c.quantity - (f.price * c.quantity * b.discount / 100)) " +
           "FROM Bill b " +
           "INNER JOIN b.carts c "+
           "INNER JOIN c.foods f "+
