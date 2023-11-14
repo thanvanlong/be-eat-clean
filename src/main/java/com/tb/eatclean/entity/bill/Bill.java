@@ -31,6 +31,7 @@ public class Bill  {
   private MethodType methodType = MethodType.MOMO;
   @Enumerated
   private BillStatus billStatus;
+  private double discount = 0;
 
   @CreationTimestamp
   private LocalDateTime createAt;
